@@ -19,4 +19,10 @@ defmodule ExblogWeb.LoginController do
       _ -> redirect(conn, to: Routes.login_path(conn, :login))
     end
   end
+
+  def logout(conn, _params) do
+    conn
+    |> Plug.Conn.put_session(:logged_in, false)
+    |> redirect(to: Routes.post_path(conn, :index))
+  end
 end

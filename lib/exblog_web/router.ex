@@ -29,6 +29,7 @@ defmodule ExblogWeb.Router do
     get "/", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
     get "/login", LoginController, :login
+    get "/logout", LoginController, :logout
     post "/login", LoginController, :do_login
   end
 
@@ -47,7 +48,7 @@ defmodule ExblogWeb.Router do
   def user_logged_in(conn, _opts) do
     case Plug.Conn.get_session(conn, :logged_in) do
       true -> conn
-      _ -> redirect(conn, to: Routes.login_path(conn, :login))
+      _ -> redirect(conn, to: ExblogWeb.Router.Helpers.login_path(conn, :login))
     end
   end
 end
