@@ -9,7 +9,6 @@ defmodule ExblogWeb.LoginController do
   end
 
   def do_login(conn, %{"login" => params}) do
-    IO.inspect(params)
     with account <- Repo.get_by(Account, username: params["username"]),
         {:ok, _account}  <- Bcrypt.check_pass(account, params["password"]) do
       conn
