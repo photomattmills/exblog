@@ -6,8 +6,18 @@ defmodule Exblog.BlogTest do
   describe "posts" do
     alias Exblog.Blog.Post
 
-    @valid_attrs %{body: "some body", description: "some description", og_image: "some og_image", title: "some title"}
-    @update_attrs %{body: "some updated body", description: "some updated description", og_image: "some updated og_image", title: "some updated title"}
+    @valid_attrs %{
+      body: "some body",
+      description: "some description",
+      og_image: "some og_image",
+      title: "some title"
+    }
+    @update_attrs %{
+      body: "some updated body",
+      description: "some updated description",
+      og_image: "some updated og_image",
+      title: "some updated title"
+    }
     @invalid_attrs %{body: nil, description: nil, og_image: nil, title: nil}
 
     def post_fixture(attrs \\ %{}) do
@@ -72,7 +82,10 @@ defmodule Exblog.BlogTest do
     alias Exblog.Blog.Account
 
     @valid_attrs %{password_hash: "some password_hash", username: "some username"}
-    @update_attrs %{password_hash: "some updated password_hash", username: "some updated username"}
+    @update_attrs %{
+      password_hash: "some updated password_hash",
+      username: "some updated username"
+    }
     @invalid_attrs %{password_hash: nil, username: nil}
 
     def account_fixture(attrs \\ %{}) do
@@ -108,7 +121,6 @@ defmodule Exblog.BlogTest do
       assert {:ok, %Account{} = account} = Blog.update_account(account, @update_attrs)
       assert account.username == "some updated username"
       assert Bcrypt.check_pass(account, "some updated password_hash")
-
     end
 
     test "update_account/2 with invalid data returns error changeset" do

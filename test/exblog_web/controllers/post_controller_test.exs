@@ -3,8 +3,20 @@ defmodule ExblogWeb.PostControllerTest do
 
   alias Exblog.Blog
 
-  @create_attrs %{body: "some body", description: "some description", og_image: "some og_image", title: "some title", slug: "some_title"}
-  @update_attrs %{body: "some updated body", description: "some updated description", og_image: "some updated og_image", title: "some updated title", slug: "a_new_slug"}
+  @create_attrs %{
+    body: "some body",
+    description: "some description",
+    og_image: "some og_image",
+    title: "some title",
+    slug: "some_title"
+  }
+  @update_attrs %{
+    body: "some updated body",
+    description: "some updated description",
+    og_image: "some updated og_image",
+    title: "some updated title",
+    slug: "a_new_slug"
+  }
   @invalid_attrs %{body: nil, description: nil, og_image: nil, title: nil}
 
   def fixture(:post) do
@@ -28,6 +40,7 @@ defmodule ExblogWeb.PostControllerTest do
 
   describe "get post by slug" do
     setup [:create_post]
+
     test "gets a post with a slug", %{conn: conn, post: post} do
       conn = get(conn, Routes.post_path(conn, :show_by_slug, post.slug))
       assert response(conn, 200) =~ "some body"
@@ -83,6 +96,7 @@ defmodule ExblogWeb.PostControllerTest do
     test "deletes chosen post", %{conn: conn, post: post} do
       conn = delete(conn, Routes.post_path(conn, :delete, post))
       assert redirected_to(conn) == Routes.post_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.post_path(conn, :show, post))
       end

@@ -6,7 +6,9 @@ defmodule ExblogWeb.ImageController do
   def create(conn, params) do
     path = "#{params["post_id"]}/#{params["image"].filename}"
     uploader().upload(params["image"], path)
-    {:ok, image} = Repo.insert(%Image{post_id: params["post_id"], url: "https://images.matt.pictures/#{path}"})
+
+    {:ok, image} =
+      Repo.insert(%Image{post_id: params["post_id"], url: "https://images.matt.pictures/#{path}"})
 
     resp_json = Jason.encode!(%{id: image.id, url: image.url})
 

@@ -14,7 +14,7 @@ defmodule ExblogWeb.PostController do
     # changeset = Blog.change_post(%Post{})
     # render(conn, "new.html", changeset: changeset)
     {:ok, post} = Repo.insert(%Post{})
-    redirect(conn, to: Routes.post_path(conn, :edit, post)) 
+    redirect(conn, to: Routes.post_path(conn, :edit, post))
   end
 
   def create(conn, %{"post" => post_params}) do

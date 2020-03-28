@@ -25,7 +25,6 @@ defmodule ExblogWeb.Router do
   scope "/", ExblogWeb do
     pipe_through :browser
 
-
     get "/", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
     get "/login", LoginController, :login

@@ -2,7 +2,6 @@ defmodule Exblog.PostTest do
   use Exblog.DataCase
   alias Exblog.Blog.Post
 
-
   describe "changeset" do
     test "it adds a slug to the record" do
       attrs = %{title: "this is a title", body: "this is a body"}

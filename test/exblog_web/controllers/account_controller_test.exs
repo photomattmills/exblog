@@ -72,6 +72,7 @@ defmodule ExblogWeb.AccountControllerTest do
     test "deletes chosen account", %{conn: conn, account: account} do
       conn = delete(conn, Routes.account_path(conn, :delete, account))
       assert redirected_to(conn) == Routes.account_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.account_path(conn, :show, account))
       end

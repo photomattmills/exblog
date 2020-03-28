@@ -19,10 +19,17 @@ defmodule Exblog.Blog do
   """
   def list_posts(page) do
     limit = 5
-    offset = (page - 1) * (limit)
-      from(p in Post, order_by: [desc: :inserted_at], limit: ^limit, offset: ^offset)
+    offset = (page - 1) * limit
+
+    from(p in Post,
+      where: [published: true],
+      order_by: [desc: :inserted_at],
+      limit: ^limit,
+      offset: ^offset
+    )
     |> Repo.all()
   end
+
   def list_posts() do
     Repo.all(Post)
   end
@@ -43,7 +50,7 @@ defmodule Exblog.Blog do
   """
   def get_post!(id), do: Repo.get!(Post, id)
 
-  def get_post_by_slug!(slug), do: Repo.get_by(Post, [slug: slug])
+  def get_post_by_slug!(slug), do: Repo.get_by(Post, slug: slug)
 
   @doc """
   Creates a post.
