@@ -21,38 +21,18 @@ defmodule ExblogWeb.ImageControllerTest do
     end
   end
 
-  # describe "update image" do
-  #
-  #   test "redirects when data is valid", %{conn: conn, image: image} do
-  #     conn = put(conn, Routes.image_path(conn, :update, image), image: @update_attrs)
-  #     assert redirected_to(conn) == Routes.image_path(conn, :show, image)
-  #
-  #     conn = get(conn, Routes.image_path(conn, :show, image))
-  #     assert html_response(conn, 200) =~ "some updated body"
-  #   end
-  #
-  #   test "renders errors when data is invalid", %{conn: conn, image: image} do
-  #     conn = put(conn, Routes.image_path(conn, :update, image), image: @invalid_attrs)
-  #     assert html_response(conn, 200) =~ "Edit Post"
-  #   end
-  # end
-  #
-  # describe "delete image" do
-  #   setup [:create_image]
-  #
-  #   test "deletes chosen image", %{conn: conn, image: image} do
-  #     conn = delete(conn, Routes.post_path(conn, :delete, post))
-  #     assert redirected_to(conn) == Routes.post_path(conn, :index)
-  #     assert_error_sent 404, fn ->
-  #       get(conn, Routes.post_path(conn, :show, post))
-  #     end
-  #   end
-  # end
-  #
-  # defp create_post(_) do
-  #   post = fixture(:post)
-  #   {:ok, post: post}
-  # end
+  describe "delete image" do
+    test "deletes images", %{conn: conn, post: blog_post} do
+      {:ok, image} = Repo.insert(%Image{url: "https://example.com", post_id: blog_post.id})
+
+      conn = delete(conn, Routes.image_path(conn, :delete, image))
+
+      assert nil == Repo.get(Image, image.id)
+
+      assert response(conn, 302)
+      assert redirected_to(conn) == Routes.post_path(conn, :edit, blog_post.id)
+    end
+  end
 end
 
 defmodule FakeUploader do

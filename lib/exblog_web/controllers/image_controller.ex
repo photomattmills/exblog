@@ -16,8 +16,12 @@ defmodule ExblogWeb.ImageController do
     |> send_resp(302, resp_json)
   end
 
-  def update(conn, params) do
+  def delete(conn, params) do
+    {:ok, image} = Repo.get(Image, params["id"]) |> Repo.delete()
 
+    conn
+    |> put_resp_header("location", Routes.post_path(conn, :edit, image.post_id))
+    |> send_resp(302, "redirecting")
   end
 
   def uploader do
