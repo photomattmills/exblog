@@ -19,6 +19,10 @@ defmodule ExblogWeb.ImageController do
   def delete(conn, params) do
     {:ok, image} = Repo.get(Image, params["id"]) |> Repo.delete()
 
+    with "https://images.matt.pictures/" <> key <- image.url do
+      uploader().delete(key)
+    end
+
     conn
     |> put_resp_header("location", Routes.post_path(conn, :edit, image.post_id))
     |> send_resp(302, "redirecting")
