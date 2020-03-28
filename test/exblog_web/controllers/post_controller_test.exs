@@ -22,7 +22,7 @@ defmodule ExblogWeb.PostControllerTest do
   describe "new post" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.post_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Post"
+      assert html_response(conn, 302) =~ "redirected"
     end
   end
 

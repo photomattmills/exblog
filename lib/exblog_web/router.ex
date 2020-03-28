@@ -38,6 +38,7 @@ defmodule ExblogWeb.Router do
 
     resources "/posts", PostController, except: [:index]
     resources "/accounts", AccountController
+    resources "/images", ImageController, only: [:create, :update]
   end
 
   # Other scopes may use custom stacks.

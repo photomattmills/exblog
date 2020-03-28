@@ -3,6 +3,7 @@ defmodule ExblogWeb.PostController do
 
   alias Exblog.Blog
   alias Exblog.Blog.Post
+  alias Exblog.Repo
 
   def index(conn, _params) do
     posts = Blog.list_posts(1)
@@ -10,8 +11,10 @@ defmodule ExblogWeb.PostController do
   end
 
   def new(conn, _params) do
-    changeset = Blog.change_post(%Post{})
-    render(conn, "new.html", changeset: changeset)
+    # changeset = Blog.change_post(%Post{})
+    # render(conn, "new.html", changeset: changeset)
+    {:ok, post} = Repo.insert(%Post{})
+    redirect(conn, to: Routes.post_path(conn, :edit, post)) 
   end
 
   def create(conn, %{"post" => post_params}) do
