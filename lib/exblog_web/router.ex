@@ -26,6 +26,7 @@ defmodule ExblogWeb.Router do
     pipe_through :browser
 
     get "/", PostController, :index
+    get "/page/:page", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
     get "/login", LoginController, :login
     get "/logout", LoginController, :logout
@@ -38,6 +39,7 @@ defmodule ExblogWeb.Router do
     resources "/posts", PostController, except: [:index]
     resources "/accounts", AccountController
     resources "/images", ImageController, only: [:create, :delete]
+    get "/images/:id/delete", ImageController, :delete
   end
 
   # Other scopes may use custom stacks.

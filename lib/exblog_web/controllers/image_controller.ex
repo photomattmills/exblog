@@ -3,17 +3,22 @@ defmodule ExblogWeb.ImageController do
   alias Exblog.Repo
   alias Exblog.Blog.Image
 
-  def create(conn, params) do
-    path = "#{params["post_id"]}/#{params["image"].filename}"
-    uploader().upload(params["image"], path)
+  def create(conn, %{"image_upload" => %{"post_id" => post_id, "images" => images}}) do
+    post_id = String.to_integer(post_id)
 
-    {:ok, image} =
-      Repo.insert(%Image{post_id: params["post_id"], url: "https://images.matt.pictures/#{path}"})
+    images = Enum.map(images, fn image ->
+      path = "#{post_id}/#{image.filename}"
+      uploader().upload(image.path, path)
 
-    resp_json = Jason.encode!(%{id: image.id, url: image.url})
+      {:ok, image} =
+        Repo.insert(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
+      image
+    end)
+
+    resp_json = Jason.encode!(%{id: hd(images).id, url: hd(images).url})
 
     conn
-    |> put_resp_header("location", Routes.post_path(conn, :edit, params["post_id"]))
+    |> put_resp_header("location", Routes.post_path(conn, :edit, post_id))
     |> put_resp_content_type("application/json")
     |> send_resp(302, resp_json)
   end

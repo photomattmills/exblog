@@ -18,10 +18,27 @@
   <%= error_tag f, :description %><br />
 
   <%= label f, :body %><br />
-  <%= textarea f, :body %>
+  <%= textarea f, :body, rows: "50", cols: "120" %>
   <%= error_tag f, :body %><br />
+
+  <%= label f, :published %><br />
+  <%= checkbox f, :published %>
 
   <div>
     <%= submit "Save" %>
   </div>
 <% end %>
+
+<div class="image_editor">
+  <h3>Images</h3>
+  <%= form_for :image_upload, Routes.image_path(@conn, :create), [multipart: true], fn f -> %>
+    <%= file_input f, :images, class: "form-control", multiple: true%>
+    <%= hidden_input f, :post_id, value: @post.id %>
+    <%= submit "Save" %>
+
+  <% end %>
+  <%= for image <- @post.images do %>
+    <%= img_tag(image.url, style: "width: 300px") %>
+    <%= link "delete", to: "/images/#{image.id}/delete"%>
+  <% end %>
+</div>

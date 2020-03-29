@@ -5,9 +5,9 @@ defmodule ExblogWeb.PostController do
   alias Exblog.Blog.Post
   alias Exblog.Repo
 
-  def index(conn, _params) do
-    posts = Blog.list_posts(1)
-    render(conn, "index.html", posts: posts)
+  def index(conn, params) do
+    posts = Blog.list_posts(String.to_integer(params["page"] || "1"))
+    render(conn, "index.html", [posts: posts, post_title: "Matt's Pictures"] ++ default_assigns(posts))
   end
 
   def new(conn, _params) do
@@ -31,12 +31,12 @@ defmodule ExblogWeb.PostController do
 
   def show(conn, %{"id" => id}) do
     post = Blog.get_post!(id)
-    render(conn, "show.html", post: post)
+    render(conn, "show.html", [post: post] ++ post_assigns(post))
   end
 
   def show_by_slug(conn, %{"post_slug" => slug}) do
     post = Blog.get_post_by_slug!(slug)
-    render(conn, "show.html", post: post)
+    render(conn, "show.html", [post: post] ++ post_assigns(post))
   end
 
   def edit(conn, %{"id" => id}) do
@@ -66,5 +66,17 @@ defmodule ExblogWeb.PostController do
     conn
     |> put_flash(:info, "Post deleted successfully.")
     |> redirect(to: Routes.post_path(conn, :index))
+  end
+
+  defp default_assigns([first_post|_rest]) do
+    [post_title: "Matt's Pictures", post_description: "Some pictures", og_image: first_post.og_image]
+  end
+
+  defp post_assigns(%{title: title, body: body, og_image: og_image}) do
+    [
+      post_title: title,
+      post_description:  String.slice(body, 0..100),
+      og_image: og_image
+    ]
   end
 end
