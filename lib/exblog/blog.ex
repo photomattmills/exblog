@@ -22,8 +22,8 @@ defmodule Exblog.Blog do
     offset = (page - 1) * limit
 
     from(p in Post,
-      where: [published: true],
-      order_by: [desc: :inserted_at],
+      where: not is_nil(p.published_at),
+      order_by: [desc: :published_at],
       limit: ^limit,
       offset: ^offset
     )

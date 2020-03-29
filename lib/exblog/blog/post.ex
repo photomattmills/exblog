@@ -7,7 +7,7 @@ defmodule Exblog.Blog.Post do
     field :body, :string
     field :description, :string
     field :og_image, :string
-    field :published, :boolean, default: false
+    field :published_at, :utc_datetime
     field :slug, :string
     field :title, :string
 
@@ -19,7 +19,7 @@ defmodule Exblog.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :og_image, :description, :body, :slug, :published])
+    |> cast(attrs, [:title, :og_image, :description, :body, :slug, :published_at])
     |> validate_required([:title, :body])
     |> add_slug_to_changeset()
   end

@@ -38,6 +38,7 @@ defmodule Exblog.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
+      {:meeseeks, "~> 0.15.0"},
       {:sweet_xml, "~> 0.6"},
       {:phoenix, "~> 1.4.16"},
       {:phoenix_pubsub, "~> 1.1"},

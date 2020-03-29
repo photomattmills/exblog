@@ -21,9 +21,6 @@
   <%= textarea f, :body, rows: "50", cols: "120" %>
   <%= error_tag f, :body %><br />
 
-  <%= label f, :published %><br />
-  <%= checkbox f, :published %>
-
   <div>
     <%= submit "Save" %>
   </div>

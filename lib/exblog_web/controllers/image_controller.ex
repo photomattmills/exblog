@@ -37,7 +37,7 @@ defmodule ExblogWeb.ImageController do
     |> send_resp(302, "redirecting")
   end
 
-  def uploader do
+  defp uploader do
     Application.get_env(:exblog, :image_uploader, Exblog.ImageUploader)
   end
 end
