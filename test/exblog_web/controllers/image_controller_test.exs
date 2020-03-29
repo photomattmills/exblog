@@ -21,9 +21,10 @@ defmodule ExblogWeb.ImageControllerTest do
 
       conn =
         post(conn, Routes.image_path(conn, :create), %{
-          image: upload,
-          caption: "this is a caption",
-          post_id: blog_post.id
+          image_upload: %{
+            images: [upload],
+            post_id: "#{blog_post.id}"
+          }
         })
 
       assert response = json_response(conn, 302)

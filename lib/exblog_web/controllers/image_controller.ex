@@ -6,14 +6,16 @@ defmodule ExblogWeb.ImageController do
   def create(conn, %{"image_upload" => %{"post_id" => post_id, "images" => images}}) do
     post_id = String.to_integer(post_id)
 
-    images = Enum.map(images, fn image ->
-      path = "#{post_id}/#{image.filename}"
-      uploader().upload(image.path, path)
+    images =
+      Enum.map(images, fn image ->
+        path = "#{post_id}/#{image.filename}"
+        uploader().upload(image.path, path)
 
-      {:ok, image} =
-        Repo.insert(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
-      image
-    end)
+        {:ok, image} =
+          Repo.insert(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
+
+        image
+      end)
 
     resp_json = Jason.encode!(%{id: hd(images).id, url: hd(images).url})
 

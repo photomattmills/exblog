@@ -47,23 +47,6 @@ defmodule ExblogWeb.PostControllerTest do
     end
   end
 
-  describe "create post" do
-    test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.post_path(conn, :create), post: @create_attrs)
-
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.post_path(conn, :show, id)
-
-      conn = get(conn, Routes.post_path(conn, :show, id))
-      assert html_response(conn, 200)
-    end
-
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.post_path(conn, :create), post: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Post"
-    end
-  end
-
   describe "edit post" do
     setup [:create_post]
 

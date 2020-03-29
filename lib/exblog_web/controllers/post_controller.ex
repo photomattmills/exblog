@@ -7,7 +7,12 @@ defmodule ExblogWeb.PostController do
 
   def index(conn, params) do
     posts = Blog.list_posts(String.to_integer(params["page"] || "1"))
-    render(conn, "index.html", [posts: posts, post_title: "Matt's Pictures"] ++ default_assigns(posts))
+
+    render(
+      conn,
+      "index.html",
+      [posts: posts, post_title: "Matt's Pictures"] ++ default_assigns(posts)
+    )
   end
 
   def new(conn, _params) do
@@ -17,17 +22,17 @@ defmodule ExblogWeb.PostController do
     redirect(conn, to: Routes.post_path(conn, :edit, post))
   end
 
-  def create(conn, %{"post" => post_params}) do
-    case Blog.create_post(post_params) do
-      {:ok, post} ->
-        conn
-        |> put_flash(:info, "Post created successfully.")
-        |> redirect(to: Routes.post_path(conn, :show, post))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-  end
+  # def create(conn, %{"post" => post_params}) do
+  #   case Blog.create_post(post_params) do
+  #     {:ok, post} ->
+  #       conn
+  #       |> put_flash(:info, "Post created successfully.")
+  #       |> redirect(to: Routes.post_path(conn, :show, post))
+  #
+  #     {:error, %Ecto.Changeset{} = changeset} ->
+  #       render(conn, "new.html", changeset: changeset)
+  #   end
+  # end
 
   def show(conn, %{"id" => id}) do
     post = Blog.get_post!(id)
@@ -68,14 +73,20 @@ defmodule ExblogWeb.PostController do
     |> redirect(to: Routes.post_path(conn, :index))
   end
 
-  defp default_assigns([first_post|_rest]) do
-    [post_title: "Matt's Pictures", post_description: "Some pictures", og_image: first_post.og_image]
+  defp default_assigns([first_post | _rest]) do
+    [
+      post_title: "Matt's Pictures",
+      post_description: "Some pictures",
+      og_image: first_post.og_image
+    ]
   end
+
+  defp default_assigns([]), do: []
 
   defp post_assigns(%{title: title, body: body, og_image: og_image}) do
     [
       post_title: title,
-      post_description:  String.slice(body, 0..100),
+      post_description: String.slice(body, 0..100),
       og_image: og_image
     ]
   end
