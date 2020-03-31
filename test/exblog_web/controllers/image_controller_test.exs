@@ -46,13 +46,3 @@ defmodule ExblogWeb.ImageControllerTest do
     end
   end
 end
-
-defmodule FakeUploader do
-  def upload(_file, _key) do
-    :ok
-  end
-
-  def delete(_key) do
-    :ok
-  end
-end

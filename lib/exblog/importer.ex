@@ -13,7 +13,7 @@ defmodule Exblog.Importer do
   end
 
   def import_post(post) do
-    title = extract_text(post, "title") |> IO.inspect(label: "title")
+    title = extract_text(post, "title")
     published_at = extract_text(post, "pubdate")
     post_body = extract_text(post, "description")
 
@@ -21,13 +21,14 @@ defmodule Exblog.Importer do
 
     moved_images =
       extract_images(post_body)
-      |> IO.inspect(label: "images")
       |> move_images_to_s3(local_post.id)
 
     new_post_body =
       Enum.reduce(moved_images, post_body, fn images, body ->
         String.replace(body, images.original.url, images.new.url)
       end)
+
+    IO.write(".")
 
     Blog.update_post(local_post, %{
       body: new_post_body,
@@ -53,18 +54,27 @@ defmodule Exblog.Importer do
 
   defp move_image_to_s3(image, post_id) do
     with {:ok, body} <- http_get_body(image.url),
-         filename <- URI.parse(image.url).path |> String.split("/") |> Enum.at(-1),
-         _ <- File.write("/tmp/#{filename}", body) do
+         filename <- get_filename_from_url(image.url),
+         _ <- File.write(tmp_file_path(filename), body) do
       path = "#{post_id}/#{filename}"
-      uploader().upload("/tmp/#{filename}", path)
+      uploader().upload(tmp_file_path(filename), path)
 
       {:ok, repo_image} =
         Repo.insert(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
 
-      %{original: image, new: repo_image} |> IO.inspect(label: "return")
+      File.rm(tmp_file_path(filename))
+      %{original: image, new: repo_image}
     else
       something -> IO.inspect(something, label: "error!")
     end
+  end
+
+  def tmp_file_path(filename), do: "/tmp/#{filename}"
+
+  defp get_filename_from_url(url) do
+    URI.parse(url).path
+    |> String.split("/")
+    |> Enum.at(-1)
   end
 
   defp uploader do
