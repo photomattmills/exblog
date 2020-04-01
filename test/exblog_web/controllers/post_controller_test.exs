@@ -7,6 +7,7 @@ defmodule ExblogWeb.PostControllerTest do
     body: "some body",
     description: "some description",
     og_image: "some og_image",
+    published_at: DateTime.utc_now(),
     title: "some title",
     slug: "some_title"
   }
@@ -25,9 +26,24 @@ defmodule ExblogWeb.PostControllerTest do
   end
 
   describe "index" do
+    setup %{conn: conn} do
+      Enum.map(0..100, fn _x -> fixture(:post) end)
+      %{conn: conn}
+    end
+
     test "lists all posts", %{conn: conn} do
       conn = get(conn, Routes.post_path(conn, :index))
       assert html_response(conn, 200)
+    end
+
+    test "has next_page link", %{conn: conn} do
+      conn = get(conn, Routes.post_path(conn, :index))
+      assert html_response(conn, 200) =~ "<a href=\"/page/2\">Next Page</a>"
+    end
+
+    test "has previous_page link", %{conn: conn} do
+      conn = get(conn, Routes.post_path(conn, :index, page: 2))
+      assert html_response(conn, 200) =~ "<a href=\"/page/1\">Previous Page</a>"
     end
   end
 

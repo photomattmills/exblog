@@ -18,16 +18,34 @@ defmodule Exblog.Blog do
 
   """
   def list_posts(page) do
-    limit = 5
-    offset = (page - 1) * limit
+    %{
+      posts: posts_query() |> limit(^post_limit()) |> offset(^post_offset(page)) |> Repo.all(),
+      next_page: next_page(page),
+      previous_page: page - 1
+    }
+  end
 
+  def next_page(page) do
+    if Repo.aggregate(posts_query(), :count, :id) > page * post_limit() do
+      page + 1
+    else
+      1
+    end
+  end
+
+  defp posts_query do
     from(p in Post,
       where: not is_nil(p.published_at),
-      order_by: [desc: :published_at],
-      limit: ^limit,
-      offset: ^offset
+      order_by: [desc: :published_at]
     )
-    |> Repo.all()
+  end
+
+  defp post_limit do
+    Application.get_env(:exblog, :posts_per_page, 5)
+  end
+
+  defp post_offset(page) do
+    (page - 1) * post_limit()
   end
 
   def list_posts() do

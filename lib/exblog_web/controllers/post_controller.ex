@@ -6,12 +6,18 @@ defmodule ExblogWeb.PostController do
   alias Exblog.Repo
 
   def index(conn, params) do
-    posts = Blog.list_posts(String.to_integer(params["page"] || "1"))
+    %{posts: posts, next_page: next_page, previous_page: previous_page} =
+      Blog.list_posts(String.to_integer(params["page"] || "1"))
 
     render(
       conn,
       "index.html",
-      [posts: posts, post_title: "Matt's Pictures"] ++ default_assigns(posts)
+      [
+        posts: posts,
+        post_title: "Matt's Pictures",
+        next_page: next_page,
+        previous_page: previous_page
+      ] ++ default_assigns(posts)
     )
   end
 
