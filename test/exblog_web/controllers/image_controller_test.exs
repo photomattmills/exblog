@@ -2,6 +2,7 @@ defmodule ExblogWeb.ImageControllerTest do
   use ExblogWeb.ConnCase
   alias Exblog.Repo
   alias Exblog.Blog.Image
+  alias Exblog.Blog.Post
 
   setup %{conn: conn} do
     Application.put_env(:exblog, :image_uploader, FakeUploader)
@@ -28,8 +29,10 @@ defmodule ExblogWeb.ImageControllerTest do
         })
 
       assert response = json_response(conn, 302)
-      assert Repo.get(Image, response["id"])
+      assert Repo.get(Image, hd(response)["id"])
       assert redirected_to(conn) == Routes.post_path(conn, :edit, blog_post.id)
+
+      assert Repo.get(Post, blog_post.id).body =~ "![](#{hd(response)["url"]})"
     end
   end
 
