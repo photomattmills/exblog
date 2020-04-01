@@ -6,36 +6,14 @@ defmodule ExblogWeb.ImageController do
   def create(conn, %{"image_upload" => %{"post_id" => post_id, "images" => images}}) do
     post_id = String.to_integer(post_id)
 
-    repo_images =
-      Enum.map(images, fn image ->
-        path = "#{post_id}/#{image.filename}"
-        uploader().upload(image.path, path)
+    repo_images = save_and_upload_images(images, post_id)
 
-        {:ok, repo_image} =
-          Repo.insert(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
-
-        repo_image
-      end)
-
-    post_update =
-      repo_images
-      |> Enum.map(fn repo_image ->
-        "![#{repo_image.caption}](#{repo_image.url})"
-      end)
-      |> Enum.join("\n")
-
-    post = Repo.get!(Post, post_id)
-    Blog.update_post(post, %{body: post.body <> post_update})
-
-    resp_json =
-      repo_images
-      |> Enum.map(fn image -> %{url: image.url, id: image.id} end)
-      |> Jason.encode!()
+    update_post_body(repo_images, post_id)
 
     conn
     |> put_resp_header("location", Routes.post_path(conn, :edit, post_id))
     |> put_resp_content_type("application/json")
-    |> send_resp(302, resp_json)
+    |> send_resp(302, build_response(repo_images))
   end
 
   def delete(conn, params) do
@@ -52,5 +30,32 @@ defmodule ExblogWeb.ImageController do
 
   defp uploader do
     Application.get_env(:exblog, :image_uploader, Exblog.ImageUploader)
+  end
+
+  defp update_post_body(images, post_id) do
+    post_update =
+      images
+      |> Enum.map(fn repo_image ->
+        "![#{repo_image.caption}](#{repo_image.url})"
+      end)
+      |> Enum.join("\n")
+
+    post = Repo.get!(Post, post_id)
+    Blog.update_post(post, %{body: post.body <> post_update})
+  end
+
+  defp build_response(images) do
+    images
+    |> Enum.map(fn image -> %{url: image.url, id: image.id} end)
+    |> Jason.encode!()
+  end
+
+  defp save_and_upload_images(images, post_id) do
+    Enum.map(images, fn image ->
+      path = "#{post_id}/#{image.filename}"
+      uploader().upload(image.path, path)
+
+      Repo.insert!(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
+    end)
   end
 end
