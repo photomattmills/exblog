@@ -49,8 +49,11 @@ defmodule ExblogWeb.Router do
 
   def user_logged_in(conn, _opts) do
     case Plug.Conn.get_session(conn, :logged_in) do
-      true -> conn
-      _ -> redirect(conn, to: ExblogWeb.Router.Helpers.login_path(conn, :login))
+      true ->
+        conn
+
+      _ ->
+        redirect(conn, to: ExblogWeb.Router.Helpers.login_path(conn, :login))
     end
   end
 end

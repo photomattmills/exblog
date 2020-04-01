@@ -1,14 +1,14 @@
 defmodule ExblogWeb.AccountControllerTest do
   use ExblogWeb.ConnCase
 
-  alias Exblog.Blog
+  alias Exblog.Blog.Accounts
 
   @create_attrs %{password_hash: "some password_hash", username: "some username"}
   @update_attrs %{password_hash: "some updated password_hash", username: "some updated username"}
   @invalid_attrs %{password_hash: nil, username: nil}
 
   def fixture(:account) do
-    {:ok, account} = Blog.create_account(@create_attrs)
+    {:ok, account} = Accounts.create_account(@create_attrs)
     account
   end
 
