@@ -17,25 +17,29 @@ defmodule Exblog.Importer do
     published_at = extract_text(post, "pubdate")
     post_body = extract_text(post, "description")
     IO.puts title
-    {:ok, local_post} = Repo.insert(%Post{})
 
-    moved_images =
-      extract_images(post_body)
-      |> move_images_to_s3(local_post.id)
+    maybe_local_post = Repo.get_by(Post, [title: title, published_at: published_at])
+    if !maybe_local_post do
+      {:ok, local_post} = Repo.insert(%Post{})
 
-    new_post_body =
-      Enum.reduce(moved_images, post_body, fn images, body ->
-        String.replace(body, images.original.url, images.new.url)
-      end)
+      moved_images =
+        extract_images(post_body)
+        |> move_images_to_s3(local_post.id, Post.title_slug(title))
 
-    IO.write(".")
+      new_post_body =
+        Enum.reduce(moved_images, post_body, fn images, body ->
+          String.replace(body, images.original.url, images.new.url)
+        end)
 
-    Blog.update_post(local_post, %{
-      body: new_post_body,
-      title: title,
-      published_at: published_at,
-      site_id: site_id
-    })
+      IO.write(".")
+
+      Blog.update_post(local_post, %{
+        body: new_post_body,
+        title: title,
+        published_at: published_at,
+        site_id: site_id
+      })
+    end
   end
 
   defp extract_text(post, key), do: Meeseeks.one(post, xpath(key)) |> Meeseeks.text()
@@ -49,15 +53,15 @@ defmodule Exblog.Importer do
     end)
   end
 
-  defp move_images_to_s3(images, post_id) do
-    images |> Enum.map(fn image -> move_image_to_s3(image, post_id) end)
+  defp move_images_to_s3(images, post_id, slug) do
+    images |> Enum.map(fn image -> move_image_to_s3(image, post_id, slug) end)
   end
 
-  defp move_image_to_s3(image, post_id) do
+  defp move_image_to_s3(image, post_id, slug) do
     with {:ok, body} <- http_get_body(image.url),
          filename <- get_filename_from_url(image.url),
          _ <- File.write(tmp_file_path(filename), body) do
-      path = "#{post_id}/#{filename}"
+      path = "#{slug}/#{post_id}/#{filename}"
       uploader().upload(tmp_file_path(filename), path)
 
       {:ok, repo_image} =
@@ -81,6 +85,8 @@ defmodule Exblog.Importer do
   defp uploader do
     Application.get_env(:exblog, :image_uploader, Exblog.ImageUploader)
   end
+
+  defp http_get_body(url = "//" <> _rest), do: http_get_body("https:" <> url)
 
   defp http_get_body(url) do
     {:ok, 200, _headers, client_ref} = :hackney.get(url, [], "", follow_redirect: true)

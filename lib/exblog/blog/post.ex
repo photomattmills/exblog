@@ -25,11 +25,14 @@ defmodule Exblog.Blog.Post do
     |> add_slug_to_changeset()
   end
 
+  def title_slug(title) do
+    String.downcase(title) |> String.replace(" ", "_")
+  end
+
   defp add_slug_to_changeset(changeset = %{valid?: false}), do: changeset
 
   defp add_slug_to_changeset(changeset = %{changes: %{title: title}}) when title != nil do
-    slug = String.downcase(title) |> String.replace(" ", "_")
-    put_change(changeset, :slug, slug)
+    put_change(changeset, :slug, title_slug(title))
   end
 
   defp add_slug_to_changeset(changeset), do: changeset
