@@ -6,13 +6,13 @@ defmodule Exblog.Importer do
 
   import Meeseeks.XPath
 
-  def import(url) do
+  def import(url, site_id) do
     http_get_body!(url)
     |> Meeseeks.all(xpath("item"))
-    |> Enum.each(fn post -> import_post(post) end)
+    |> Enum.each(fn post -> import_post(post, site_id) end)
   end
 
-  def import_post(post) do
+  def import_post(post, site_id) do
     title = extract_text(post, "title")
     published_at = extract_text(post, "pubdate")
     post_body = extract_text(post, "description")
@@ -33,7 +33,8 @@ defmodule Exblog.Importer do
     Blog.update_post(local_post, %{
       body: new_post_body,
       title: title,
-      published_at: published_at
+      published_at: published_at,
+      site_id: site_id
     })
   end
 

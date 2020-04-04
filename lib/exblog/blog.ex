@@ -17,25 +17,27 @@ defmodule Exblog.Blog do
       [%Post{}, ...]
 
   """
-  def list_posts(page) do
+  def list_posts(page, site_id) do
     %{
-      posts: posts_query() |> limit(^post_limit()) |> offset(^post_offset(page)) |> Repo.all(),
-      next_page: next_page(page),
+      posts:
+        posts_query(site_id) |> limit(^post_limit()) |> offset(^post_offset(page)) |> Repo.all(),
+      next_page: next_page(page, site_id),
       previous_page: page - 1
     }
   end
 
-  def next_page(page) do
-    if Repo.aggregate(posts_query(), :count, :id) > page * post_limit() do
+  def next_page(page, site_id) do
+    if Repo.aggregate(posts_query(site_id), :count, :id) > page * post_limit() do
       page + 1
     else
       1
     end
   end
 
-  defp posts_query do
+  defp posts_query(site_id) do
     from(p in Post,
       where: not is_nil(p.published_at),
+      where: [site_id: ^site_id],
       order_by: [desc: :published_at]
     )
   end

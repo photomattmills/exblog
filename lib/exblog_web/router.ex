@@ -7,6 +7,7 @@ defmodule ExblogWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug ExblogWeb.SitePlug
   end
 
   pipeline :logged_in do
@@ -16,6 +17,7 @@ defmodule ExblogWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :user_logged_in
+    plug ExblogWeb.SitePlug
   end
 
   pipeline :api do
@@ -40,6 +42,8 @@ defmodule ExblogWeb.Router do
     resources "/accounts", AccountController
     resources "/images", ImageController, only: [:create, :delete]
     get "/images/:id/delete", ImageController, :delete
+
+    resources "/sites", SiteController
   end
 
   # Other scopes may use custom stacks.

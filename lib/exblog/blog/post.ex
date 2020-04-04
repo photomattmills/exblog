@@ -11,6 +11,7 @@ defmodule Exblog.Blog.Post do
     field :slug, :string
     field :title, :string
 
+    belongs_to :site, Exblog.Domain.Site
     has_many :images, Image
 
     timestamps()
@@ -19,7 +20,7 @@ defmodule Exblog.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :og_image, :description, :body, :slug, :published_at])
+    |> cast(attrs, [:title, :og_image, :description, :body, :slug, :published_at, :site_id])
     |> validate_required([:title, :body])
     |> add_slug_to_changeset()
   end

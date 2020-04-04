@@ -7,7 +7,7 @@ defmodule ExblogWeb.PostController do
 
   def index(conn, params) do
     %{posts: posts, next_page: next_page, previous_page: previous_page} =
-      Blog.list_posts(String.to_integer(params["page"] || "1"))
+      Blog.list_posts(String.to_integer(params["page"] || "1"), conn.assigns.site.id)
 
     render(
       conn,

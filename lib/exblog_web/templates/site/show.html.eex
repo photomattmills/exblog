@@ -1,0 +1,18 @@
+<h1>Show Site</h1>
+
+<ul>
+
+  <li>
+    <strong>Domain name:</strong>
+    <%= @site.host_name %>
+  </li>
+
+  <li>
+    <strong>Css:</strong>
+    <%= @site.css %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.site_path(@conn, :edit, @site) %></span>
+<span><%= link "Back", to: Routes.site_path(@conn, :index) %></span>

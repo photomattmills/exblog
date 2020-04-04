@@ -21,6 +21,8 @@
   <%= textarea f, :body, rows: "50", cols: "120" %>
   <%= error_tag f, :body %><br />
 
+  <%= hidden_input f, :site_id, value: @site.id %>
+
   <div>
     <%= submit "Save" %>
   </div>

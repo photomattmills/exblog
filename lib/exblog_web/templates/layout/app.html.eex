@@ -9,57 +9,23 @@
     <%= {:safe, "<meta property=\"og:image\" content=\"#{assigns[:og_image]}\" />"} %>
     <meta name="google-site-verification" content="dn-WEbTLy0TZzIcsjAoD6Sin0VE5fmSSCLBIyBr7QFA" />
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@photomattmills">
-    <meta name="twitter:creator" content="@photomattmills">
+    <%= {:safe, "<meta property=\"twitter:site\" content=\"#{@site.twitter_handle}\" />"} %>
+    <%= {:safe, "<meta property=\"twitter:creator\" content=\"#{@site.twitter_handle}\" />"} %>
+
     <%= {:safe, "<meta property=\"twitter:title\" content=\"#{assigns[:post_title]}\" />"} %>
     <%= {:safe, "<meta property=\"twitter:description\" content=\"#{assigns[:post_description]}\" />"} %>
     <%= {:safe, "<meta property=\"twitter:image\" content=\"#{assigns[:og_image]}\" />"} %>
 
-    <title><%= assigns[:page_title] || "matt's pictures" %></title>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <title><%= @site.title || "matt's pictures" %></title>
+    <!-- <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/> -->
+    <%= {:safe, @site.css} %>
     <%= csrf_meta_tag() %>
   </head>
-<body>
-  <div id="page">
-    <div class="content">
-      <div id="header">
-        <div id="top">
-          <a href="/" class="title">matt.pictures</a>
-        </div>
-        <div id="bottom">
-          <div class="buttons">
-
-            <a href="https://patreon.com/user?u=738372">Patreon</a>
-            <a href="http://matt.pictures/rss">RSS</a>
-            <a href="http://instagram.com/photomattmills">Instagram</a>
-            <a href="http://matt.pictures/portfolio">Portfolio</a>
-            <a href="mailto:sunrisetimes@gmail.com">email me </a>
-
-            <%= if Plug.Conn.get_session(@conn, :logged_in) do %>
-              <%= link "New Post", to: Routes.post_path(@conn, :new) %>
-            <% end %>
-
-          </div>
-        </div>
-      </div>
-      <div id="main">
-        <div id="content-wrapper">
-          <main role="main" class="container">
-            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-            <%= render @view_module, @view_template, assigns %>
-          </main>
-        </div>
-      </div>
-      <br>
-      <div id="footer" class="footer">
-        <p>Copyright &copy; 2008-Forever, Matt Mills.<br /></p>
-        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-      </div>
-    </div>
-  </div>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-
-</body>
+  <body>
+    <%= {:safe, @site.header} %>
+    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <%= render @view_module, @view_template, assigns %>
+      <%= {:safe, @site.footer} %>
+  </body>
 </html>
