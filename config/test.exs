@@ -2,7 +2,7 @@ use Mix.Config
 
 # Configure your database
 config :exblog, Exblog.Repo,
-  username: System.get_env("DATABASE_URL") || "postgres",
+  username: System.get_env("DATABASE_USER") || "postgres",
   password: System.get_env("DATABASE_PASSWORD") || "postgres",
   database: "exblog_test",
   hostname: "localhost",

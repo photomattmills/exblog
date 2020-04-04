@@ -13,7 +13,12 @@ database_url =
 
 config :exblog, Exblog.Repo,
   # ssl: true,
-  url: database_url,
+  config :logistics_service, LogisticsService.Repo,
+  username: System.get_env("DATABASE_USER"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  hostname: "localhost",
+  port: 5432,
+  database: "blog_prod",
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =
@@ -29,6 +34,7 @@ config :exblog, ExblogWeb.Endpoint,
     transport_options: [socket_opts: [:inet6]]
   ],
   secret_key_base: secret_key_base
+  server: true
 
 # ## Using releases (Elixir v1.9+)
 #
