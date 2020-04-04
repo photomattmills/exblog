@@ -89,12 +89,14 @@ defmodule Exblog.Importer do
   defp http_get_body(url = "//" <> _rest), do: http_get_body("https:" <> url)
 
   defp http_get_body(url) do
-    {:ok, 200, _headers, client_ref} = :hackney.get(url, [], "", follow_redirect: true)
-    :hackney.body(client_ref)
+    case :hackney.get(url, [], "", follow_redirect: true) do
+
+      {:ok, 200, _headers, client_ref} -> :hackney.body(client_ref)
+      _ -> :error
+    end
   end
 
   defp http_get_body!(url) do
-    {:ok, body} = http_get_body(url)
-    body
+    with {:ok, body} <- http_get_body(url), do: body
   end
 end
