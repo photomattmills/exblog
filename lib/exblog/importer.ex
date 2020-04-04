@@ -16,7 +16,7 @@ defmodule Exblog.Importer do
     title = extract_text(post, "title")
     published_at = extract_text(post, "pubdate")
     post_body = extract_text(post, "description")
-
+    IO.puts title
     {:ok, local_post} = Repo.insert(%Post{})
 
     moved_images =

@@ -2,7 +2,7 @@ defmodule Exblog.ImageUploader do
   def upload(path, object_key) do
     path
     |> ExAws.S3.Upload.stream_file()
-    |> ExAws.S3.upload("mattdotpicturesimages", object_key,
+    |> ExAws.S3.upload(bucket(), object_key,
       content_type: "image/jpeg",
       acl: :public_read
     )
@@ -11,5 +11,13 @@ defmodule Exblog.ImageUploader do
 
   def delete(key) do
     ExAws.S3.delete_object("mattdotpicturesimages", key)
+  end
+
+  def bucket do
+    case Mix.env() do
+      "dev" -> "mattdotpicturesimages-dev"
+      "test" -> "mattdotpicturesimages-test"
+      "prod" -> "mattdotpicturesimages"
+    end
   end
 end
