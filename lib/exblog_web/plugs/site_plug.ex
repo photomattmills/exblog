@@ -3,14 +3,13 @@ defmodule ExblogWeb.SitePlug do
 
   def call(conn, _default) do
     site = Exblog.Repo.get_by(Exblog.Domain.Site, host_name: conn.host) || default_site(conn)
-    IO.inspect(conn)
 
     Plug.Conn.assign(conn, :site, site)
   end
 
   def default_site(conn) do
     %{
-      id: nil,
+      id: 1,
       host_name: conn.host,
       css: default_css(),
       header: default_header(),

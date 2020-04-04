@@ -3,9 +3,22 @@ defmodule ExblogWeb.SiteControllerTest do
 
   alias Exblog.Domain
 
-  @create_attrs %{css: "some css", domain_name: "some domain_name"}
-  @update_attrs %{css: "some updated css", domain_name: "some updated domain_name"}
-  @invalid_attrs %{css: nil, domain_name: nil}
+  @create_attrs     %{
+        host_name: "test_host",
+        css: "<style></style>",
+        header: "<h1>Hello Dolly</h1>",
+        footer: "<h3>goodbye, dolly</h3>",
+        twitter_handle: "@photomattmills",
+        title: "matt's pictures"
+      }
+  @update_attrs %{  host_name: "test_host",
+    css: "<style>.updated {width: 100em}</style>",
+    header: "<h1>Hello dolly</h1>",
+    footer: "<h3>goodbye, Dolly</h3>",
+    twitter_handle: "@photonmattmills",
+    title: "pictures"
+  }
+  @invalid_attrs %{css: nil, host_name: nil}
 
   def fixture(:site) do
     {:ok, site} = Domain.create_site(@create_attrs)
@@ -60,7 +73,7 @@ defmodule ExblogWeb.SiteControllerTest do
       assert redirected_to(conn) == Routes.site_path(conn, :show, site)
 
       conn = get(conn, Routes.site_path(conn, :show, site))
-      assert html_response(conn, 200) =~ "some updated css"
+      assert html_response(conn, 200) =~ @update_attrs.css
     end
 
     test "renders errors when data is invalid", %{conn: conn, site: site} do

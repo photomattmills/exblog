@@ -6,9 +6,9 @@ defmodule Exblog.DomainTest do
   describe "sites" do
     alias Exblog.Domain.Site
 
-    @valid_attrs %{css: "some css", domain_name: "some domain_name"}
-    @update_attrs %{css: "some updated css", domain_name: "some updated domain_name"}
-    @invalid_attrs %{css: nil, domain_name: nil}
+    @valid_attrs %{css: "some css", host_name: "some host_name"}
+    @update_attrs %{css: "some updated css", host_name: "some updated host_name"}
+    @invalid_attrs %{css: nil, host_name: nil}
 
     def site_fixture(attrs \\ %{}) do
       {:ok, site} =
@@ -32,7 +32,7 @@ defmodule Exblog.DomainTest do
     test "create_site/1 with valid data creates a site" do
       assert {:ok, %Site{} = site} = Domain.create_site(@valid_attrs)
       assert site.css == "some css"
-      assert site.domain_name == "some domain_name"
+      assert site.host_name == "some host_name"
     end
 
     test "create_site/1 with invalid data returns error changeset" do
@@ -43,7 +43,7 @@ defmodule Exblog.DomainTest do
       site = site_fixture()
       assert {:ok, %Site{} = site} = Domain.update_site(site, @update_attrs)
       assert site.css == "some updated css"
-      assert site.domain_name == "some updated domain_name"
+      assert site.host_name == "some updated host_name"
     end
 
     test "update_site/2 with invalid data returns error changeset" do

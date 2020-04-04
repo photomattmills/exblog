@@ -9,7 +9,8 @@ defmodule ExblogWeb.PostControllerTest do
     og_image: "some og_image",
     published_at: DateTime.utc_now(),
     title: "some title",
-    slug: "some_title"
+    slug: "some_title",
+    site_id: 1
   }
   @update_attrs %{
     body: "some updated body",
