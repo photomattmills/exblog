@@ -54,7 +54,7 @@ defmodule Exblog.Importer do
   end
 
   defp move_images_to_s3(images, post_id, slug) do
-    images |> Enum.map(fn image -> move_image_to_s3(image, post_id, slug) end)
+    images |> Enum.map(fn image -> move_image_to_s3(image, post_id, slug) end) |> Enum.reject(fn a -> a == nil end)
   end
 
   defp move_image_to_s3(image, post_id, slug) do
@@ -70,7 +70,7 @@ defmodule Exblog.Importer do
       File.rm(tmp_file_path(filename))
       %{original: image, new: repo_image}
     else
-      something -> IO.inspect(something, label: "error!")
+      something -> IO.inspect(something, label: "error!"); nil
     end
   end
 
