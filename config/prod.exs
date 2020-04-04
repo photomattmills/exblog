@@ -10,7 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :exblog, ExblogWeb.Endpoint,
-  url: [host: "example.com", port: 80]
+  url: [host: "example.com", port: 80
+
+config :exblog, :s3_bucket, "mattdotpicturesimages"
 
 # Do not print debug messages in production
 config :logger, level: :error

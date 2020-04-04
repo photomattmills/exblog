@@ -13,11 +13,5 @@ defmodule Exblog.ImageUploader do
     ExAws.S3.delete_object("mattdotpicturesimages", key)
   end
 
-  def bucket do
-    case Mix.env() do
-      "dev" -> "mattdotpicturesimages-dev"
-      "test" -> "mattdotpicturesimages-test"
-      "prod" -> "mattdotpicturesimages"
-    end
-  end
+  def bucket, do: Application.get_env(:exblog, :s3_bucket, "test")
 end
