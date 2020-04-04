@@ -12,14 +12,12 @@ database_url =
     """
 
 config :exblog, Exblog.Repo,
-  # ssl: true,
-  config :logistics_service, LogisticsService.Repo,
-  username: System.get_env("DATABASE_USER"),
-  password: System.get_env("DATABASE_PASSWORD"),
-  hostname: "localhost",
-  port: 5432,
-  database: "blog_prod",
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+    username: System.get_env("DATABASE_USER"),
+    password: System.get_env("DATABASE_PASSWORD"),
+    hostname: "localhost",
+    port: 5432,
+    database: "blog_prod",
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") ||
