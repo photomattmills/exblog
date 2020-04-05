@@ -26,6 +26,10 @@ defmodule Exblog.Blog do
     }
   end
 
+  def list_all_posts(site_id) do
+    posts_query(site_id) |> Repo.all()
+  end
+
   def next_page(page, site_id) do
     if Repo.aggregate(posts_query(site_id), :count, :id) > page * post_limit() do
       page + 1

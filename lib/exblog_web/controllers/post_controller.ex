@@ -21,24 +21,20 @@ defmodule ExblogWeb.PostController do
     )
   end
 
+  def rss(conn, _params) do
+    posts = Blog.list_all_posts(conn.assigns.site.id)
+
+    conn
+    |> put_resp_content_type("text/xml")
+    |> render("index.xml", posts: posts)
+  end
+
   def new(conn, _params) do
     # changeset = Blog.change_post(%Post{})
     # render(conn, "new.html", changeset: changeset)
     {:ok, post} = Repo.insert(%Post{})
     redirect(conn, to: Routes.post_path(conn, :edit, post))
   end
-
-  # def create(conn, %{"post" => post_params}) do
-  #   case Blog.create_post(post_params) do
-  #     {:ok, post} ->
-  #       conn
-  #       |> put_flash(:info, "Post created successfully.")
-  #       |> redirect(to: Routes.post_path(conn, :show, post))
-  #
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       render(conn, "new.html", changeset: changeset)
-  #   end
-  # end
 
   def show(conn, %{"id" => id}) do
     post = Blog.get_post!(id)
