@@ -10,7 +10,7 @@
     <item>
       <title><%= post.title %></title>
       <description>
-        <%= Earmark.as_html!(post.body, []) %>
+        <%= Earmark.as_html!(post.body, []) |> escape_xml() %>
       </description>
       <pubDate><%= post.published_at %></pubDate>
       <guid><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, post.slug)}" %></guid>
