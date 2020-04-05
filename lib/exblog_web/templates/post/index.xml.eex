@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Not Untitled</title>
+    <link>http://matt.pictures/rss/</link>
+    <language>en-us</language>
+    <ttl>40</ttl>
+    <description>My name is Matt Mills. I spit hot photos.</description>
+    <%= for post <- @posts do %>
+    <item>
+      <title><%= post.title %></title>
+      <description>
+        <%= Earmark.as_html!(post.body, []) %>
+      </description>
+      <pubDate><%= post.published_at %></pubDate>
+      <guid><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, post.slug)}" %></guid>
+      <link><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, post.slug)}" %></link>
+    </item>
+    <% end %>
+
+  </channel>
+</rss>
