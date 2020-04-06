@@ -107,10 +107,18 @@ defmodule Exblog.Blog do
 
   """
   def update_post(%Post{} = post, attrs) do
+    attrs = add_published_at(post, attrs)
+
     post
     |> Post.changeset(attrs)
     |> Repo.update()
   end
+
+  defp add_published_at(_post = %{published_at: nil}, attrs) do
+    Map.merge(attrs, %{"published_at" => DateTime.utc_now()})
+  end
+
+  defp add_published_at(_,attrs), do: attrs
 
   @doc """
   Deletes a post.
