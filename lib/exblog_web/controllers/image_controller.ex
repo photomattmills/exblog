@@ -35,7 +35,7 @@ defmodule ExblogWeb.ImageController do
     post_update =
       images
       |> Enum.map(fn repo_image ->
-        "![#{repo_image.caption}](#{repo_image.url})"
+        "# ![#{repo_image.caption}](#{repo_image.url})"
       end)
       |> Enum.join("\n")
 
