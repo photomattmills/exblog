@@ -10,7 +10,7 @@ defmodule Exblog.ImageUploader do
   end
 
   def delete(key) do
-    ExAws.S3.delete_object("mattdotpicturesimages", key)
+    ExAws.S3.delete_object(bucket(), key) |> ExAws.request!(region: "us-west-2")
   end
 
   def bucket, do: Application.get_env(:exblog, :s3_bucket, "test")

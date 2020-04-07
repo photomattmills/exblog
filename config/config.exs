@@ -9,7 +9,8 @@ use Mix.Config
 
 config :exblog,
   ecto_repos: [Exblog.Repo],
-  s3_bucket: "mattdotpicturesimages-dev"
+  s3_bucket: "mattdotpicturesimages-dev",
+  s3_base_url: "https://mattdotpicturesimages-dev.s3-us-west-2.amazonaws.com"
 
 # Configures the endpoint
 config :exblog, ExblogWeb.Endpoint,

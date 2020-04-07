@@ -17,15 +17,14 @@ defmodule ExblogWeb.ImageController do
   end
 
   def delete(conn, params) do
-    {:ok, image} = Repo.get(Image, params["id"]) |> Repo.delete()
-
-    with "https://images.matt.pictures/" <> key <- image.url do
+    with {:ok, image} <- Repo.get(Image, params["id"]) |> Repo.delete(),
+         key <- String.replace(image.url, "#{base_url()}/", "") do
       uploader().delete(key)
-    end
 
-    conn
-    |> put_resp_header("location", Routes.post_path(conn, :edit, image.post_id))
-    |> send_resp(302, "redirecting")
+      conn
+      |> put_resp_header("location", Routes.post_path(conn, :edit, image.post_id))
+      |> send_resp(302, "redirecting")
+    end
   end
 
   defp uploader do
@@ -41,7 +40,9 @@ defmodule ExblogWeb.ImageController do
       |> Enum.join("\n")
 
     post = Repo.get!(Post, post_id)
-    Blog.update_post(post, %{body: post.body <> post_update})
+
+    Ecto.Changeset.change(post, %{body: "#{post.body}" <> post_update})
+    |> Repo.update()
   end
 
   defp build_response(images) do
@@ -55,7 +56,9 @@ defmodule ExblogWeb.ImageController do
       path = "#{post_id}/#{image.filename}"
       uploader().upload(image.path, path)
 
-      Repo.insert!(%Image{post_id: post_id, url: "https://images.matt.pictures/#{path}"})
+      Repo.insert!(%Image{post_id: post_id, url: "#{base_url()}/#{path}"})
     end)
   end
+
+  defp base_url, do: Application.get_env(:exblog, :s3_base_url)
 end
