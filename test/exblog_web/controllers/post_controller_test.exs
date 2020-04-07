@@ -2,6 +2,8 @@ defmodule ExblogWeb.PostControllerTest do
   use ExblogWeb.ConnCase
 
   alias Exblog.Blog
+  alias Exblog.Blog.Post
+  alias Exblog.Repo
 
   @create_attrs %{
     body: "some body",
@@ -82,6 +84,14 @@ defmodule ExblogWeb.PostControllerTest do
 
       conn = get(conn, Routes.post_path(conn, :show, post))
       assert html_response(conn, 200) =~ "some updated body"
+    end
+
+    test "updates published_at when published=true", %{conn: conn, post: post} do
+      put(conn, Routes.post_path(conn, :update, post),
+        post: Map.merge(@update_attrs, %{published: "true"})
+      )
+
+      assert Repo.get(Post, post.id).published_at != nil
     end
 
     test "renders errors when data is invalid", %{conn: conn, post: post} do
