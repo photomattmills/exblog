@@ -6,5 +6,8 @@
 
 </ul>
 
+<%= if Plug.Conn.get_session(@conn, :logged_in) do %>
 <span><%= link "Edit", to: Routes.post_path(@conn, :edit, @post) %></span>
+<% end %>
+
 <span><%= link "Back", to: Routes.post_path(@conn, :index) %></span>
