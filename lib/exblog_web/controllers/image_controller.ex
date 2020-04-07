@@ -1,6 +1,6 @@
 defmodule ExblogWeb.ImageController do
   use ExblogWeb, :controller
-  alias Exblog.{Repo, Blog}
+  alias Exblog.Repo
   alias Exblog.Blog.{Image, Post}
 
   def create(conn, %{"image_upload" => %{"post_id" => post_id, "images" => images}}) do
