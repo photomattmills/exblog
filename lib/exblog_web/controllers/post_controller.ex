@@ -85,10 +85,10 @@ defmodule ExblogWeb.PostController do
 
   defp default_assigns([]), do: []
 
-  defp post_assigns(%{title: title, body: body, og_image: og_image}) do
+  defp post_assigns(%{title: title, og_image: og_image, description: description}) do
     [
       post_title: title,
-      post_description: String.slice(body, 0..100),
+      post_description: description,
       og_image: og_image
     ]
   end
