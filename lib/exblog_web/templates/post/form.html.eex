@@ -22,7 +22,7 @@
   <%= error_tag f, :body %><br />
 
   <%= label f, :published %>
-  <%= checkbox f, :published, value: true %>
+  <%= checkbox f, :published, value: published(@post) %>
 
   <%= hidden_input f, :site_id, value: @site.id %>
 
