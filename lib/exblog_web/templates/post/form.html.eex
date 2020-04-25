@@ -1,3 +1,5 @@
+
+<div class="post_editor">
 <%= form_for @changeset, @action, fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
@@ -30,7 +32,7 @@
     <%= submit "Save" %>
   </div>
 <% end %>
-
+</div>
 <div class="image_editor">
   <h3>Images</h3>
   <%= form_for :image_upload, Routes.image_path(@conn, :create), [multipart: true], fn f -> %>
