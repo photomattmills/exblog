@@ -1,3 +1,6 @@
+<%= if Plug.Conn.get_session(@conn, :logged_in) do %>
+<span><%= link "New Post", to: Routes.post_path(@conn, :new) %></span>
+<% end %>
 
 <%= for post <- @posts do %>
   <div class="post">
