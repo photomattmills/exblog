@@ -1,0 +1,2 @@
+#! /usr/bin/env bash
+MIX_ENV=prod mix compile && mix release && _build/prod/rel/exblog/bin/exblog restart
