@@ -30,7 +30,7 @@ defmodule ExblogWeb.PostController do
   end
 
   def admin_index(conn, _params) do
-    posts = Blog.list_all_posts(conn.assigns.site.id)
+    posts = Blog.list_published_and_unpublished_posts(conn.assigns.site.id)
 
     render(conn, "admin-index.html", [posts: posts] ++ default_assigns(posts))
   end

@@ -30,6 +30,10 @@ defmodule Exblog.Blog do
     posts_query(site_id) |> Repo.all()
   end
 
+  def list_published_and_unpublished_posts(site_id) do
+    all_posts_query(site_id) |> Repo.all()
+  end
+
   def next_page(page, site_id) do
     if Repo.aggregate(posts_query(site_id), :count, :id) > page * post_limit() do
       page + 1
@@ -43,6 +47,13 @@ defmodule Exblog.Blog do
       where: not is_nil(p.published_at),
       where: [site_id: ^site_id],
       order_by: [desc: :published_at]
+    )
+  end
+
+  defp all_posts_query(site_id) do
+    from(p in Post,
+      where: [site_id: ^site_id],
+      order_by: [desc: :inserted_at]
     )
   end
 
