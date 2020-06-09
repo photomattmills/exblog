@@ -39,7 +39,9 @@ defmodule ExblogWeb.Router do
   scope "/", ExblogWeb do
     pipe_through :logged_in
 
-    resources "/posts", PostController, except: [:index]
+    resources "/posts", PostController, except: [:index, :delete]
+    get "posts/:id/delete", PostController, :delete
+    get "/admin/posts", PostController, :admin_index
     resources "/accounts", AccountController
     resources "/images", ImageController, only: [:create, :delete]
     get "/images/:id/delete", ImageController, :delete

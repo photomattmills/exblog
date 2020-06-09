@@ -29,6 +29,12 @@ defmodule ExblogWeb.PostController do
     |> render("index.xml", posts: posts)
   end
 
+  def admin_index(conn, _params) do
+    posts = Blog.list_all_posts(conn.assigns.site.id)
+
+    render(conn, "admin-index.html", [posts: posts] ++ default_assigns(posts))
+  end
+
   def new(conn, _params) do
     # changeset = Blog.change_post(%Post{})
     # render(conn, "new.html", changeset: changeset)
@@ -72,7 +78,7 @@ defmodule ExblogWeb.PostController do
 
     conn
     |> put_flash(:info, "Post deleted successfully.")
-    |> redirect(to: Routes.post_path(conn, :index))
+    |> redirect(to: Routes.post_path(conn, :admin_index))
   end
 
   defp default_assigns([first_post | _rest]) do
