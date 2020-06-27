@@ -6,7 +6,7 @@
   <div class="post">
     <h2><%= link post.title, to: Routes.post_path(@conn, :show_by_slug, post.slug) %></h2>
     <%= {:safe, Earmark.as_html!(post.body, [])} %>
-    <h4>Posted by Matt on <%= post.published_at %> GMT</h4>
+    <h4>Posted on <%= post.published_at %> GMT</h4>
   </div>
 
 <% end %>
