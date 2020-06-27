@@ -14,10 +14,9 @@ defmodule ExblogWeb.PostController do
       "index.html",
       [
         posts: posts,
-        post_title: "Matt's Pictures",
         next_page: next_page,
         previous_page: previous_page
-      ] ++ default_assigns(posts)
+      ] ++ default_assigns(conn, posts)
     )
   end
 
@@ -32,7 +31,7 @@ defmodule ExblogWeb.PostController do
   def admin_index(conn, _params) do
     posts = Blog.list_published_and_unpublished_posts(conn.assigns.site.id)
 
-    render(conn, "admin-index.html", [posts: posts] ++ default_assigns(posts))
+    render(conn, "admin-index.html", [posts: posts] ++ default_assigns(conn, posts))
   end
 
   def new(conn, _params) do
@@ -81,15 +80,15 @@ defmodule ExblogWeb.PostController do
     |> redirect(to: Routes.post_path(conn, :admin_index))
   end
 
-  defp default_assigns([first_post | _rest]) do
+  defp default_assigns(conn, [first_post | _rest]) do
     [
-      post_title: "Matt's Pictures",
+      post_title: conn.assigns.site.title,
       post_description: "Some pictures",
       og_image: first_post.og_image
     ]
   end
 
-  defp default_assigns([]), do: []
+  defp default_assigns(conn, []), do: [post_title: conn.assigns.site.title]
 
   defp post_assigns(%{title: title, og_image: og_image, description: description}) do
     [
