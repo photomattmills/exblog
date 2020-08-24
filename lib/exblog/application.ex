@@ -11,9 +11,9 @@ defmodule Exblog.Application do
       # Start the Ecto repository
       Exblog.Repo,
       # Start the endpoint when the application starts
-      ExblogWeb.Endpoint
-      # Starts a worker by calling: Exblog.Worker.start_link(arg)
-      # {Exblog.Worker, arg},
+      ExblogWeb.Endpoint,
+      # pubsub stuff
+      {Phoenix.PubSub, [name: Exblog.PubSub, adapter: Phoenix.PubSub.PG2]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

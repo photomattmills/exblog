@@ -17,7 +17,7 @@ config :exblog, ExblogWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "HcCRYcz39xJYs+tpsqDYlWfRfohDFIcyPqCeYH8SuzZ8KdQ8JZIX9allytZtZMRV",
   render_errors: [view: ExblogWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Exblog.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: Exblog.PubSub,
   live_view: [signing_salt: "lGEPsLhy"]
 
 # Configures Elixir's Logger
