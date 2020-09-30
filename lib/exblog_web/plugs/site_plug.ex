@@ -1,4 +1,5 @@
 defmodule ExblogWeb.SitePlug do
+  require Logger
   def init(options), do: options
 
   def call(conn, _default) do
