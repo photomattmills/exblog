@@ -25,6 +25,20 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :logger, backends: [{LoggerFileBackend, :request_log}],
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
+
+# Keep a seperate log file for each env.
+# logs are stored in the root directory of the application
+# inside the logs folder.
+# Note: Remember to specify the format along with the metadata required.
+# Configurable per LoggerFileBackend.
+config :logger, :request_log,
+  path: "logs/request.#{Mix.env}.log",
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
