@@ -20,7 +20,7 @@ defmodule Exblog.MixProject do
   def application do
     [
       mod: {Exblog.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :logger_file_backend]
     ]
   end
 
@@ -49,7 +49,8 @@ defmodule Exblog.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.2"}
+      {:plug_cowboy, "~> 2.2"},
+      {:logger_file_backend, "~> 0.0.11"}
     ]
   end
 
