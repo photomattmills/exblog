@@ -17,7 +17,8 @@ defmodule ExblogWeb.SitePlug do
       header: default_header(),
       footer: default_footer(),
       twitter_handle: "@photomattmills",
-      title: "matt's pictures"
+      title: "matt's pictures",
+      root_page: nil
     }
   end
 

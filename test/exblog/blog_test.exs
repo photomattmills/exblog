@@ -29,21 +29,6 @@ defmodule Exblog.BlogTest do
       post |> Repo.preload(:images)
     end
 
-    test "list_posts/0 returns all posts" do
-      post = post_fixture()
-
-      assert Blog.list_posts() == [
-               %Post{
-                 post
-                 | images: %Ecto.Association.NotLoaded{
-                     __cardinality__: :many,
-                     __field__: :images,
-                     __owner__: Exblog.Blog.Post
-                   }
-               }
-             ]
-    end
-
     test "get_post!/1 returns the post with given id" do
       post = post_fixture()
       assert Blog.get_post!(post.id) == post

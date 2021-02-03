@@ -5,13 +5,28 @@ defmodule ExblogWeb.PostController do
   alias Exblog.Blog.Post
   alias Exblog.Repo
 
-  def index(conn, params) do
+  def index(conn = %{assigns: %{site: %{root_page: root}}}, params) when is_nil(root) do
     %{posts: posts, next_page: next_page, previous_page: previous_page} =
       Blog.list_posts(String.to_integer(params["page"] || "1"), conn.assigns.site.id)
 
     render(
       conn,
       "index.html",
+      [
+        posts: posts,
+        next_page: next_page,
+        previous_page: previous_page
+      ] ++ default_assigns(conn, posts)
+    )
+  end
+
+  def index(conn = %{assigns: %{site: site = %{root_page: "grid"}}}, params) do
+    %{posts: posts, next_page: next_page, previous_page: previous_page} =
+      Blog.list_posts(String.to_integer(params["page"] || "1"), site.id, site.per_page)
+
+    render(
+      conn,
+      "grid-index.html",
       [
         posts: posts,
         next_page: next_page,

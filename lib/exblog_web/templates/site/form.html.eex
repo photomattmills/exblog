@@ -17,6 +17,14 @@
   <%= text_input f, :twitter_handle %>
   <%= error_tag f, :twitter_handle %><br />
 
+  <%= label f, :root_page %><br />
+  <%= text_input f, :root_page %>
+  <%= error_tag f, :root_page %><br />
+
+  <%= label f, :per_page %><br />
+  <%= text_input f, :per_page %>
+  <%= error_tag f, :per_page %><br />
+
   <%= label f, :css %><br />
   <%= textarea f, :css, rows: "20", cols: "120"  %>
   <%= error_tag f, :css %><br />

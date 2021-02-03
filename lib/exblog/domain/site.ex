@@ -9,6 +9,8 @@ defmodule Exblog.Domain.Site do
     field :footer, :string
     field :twitter_handle, :string
     field :title, :string
+    field :root_page, :string
+    field :per_page, :integer
 
     timestamps()
   end
@@ -16,7 +18,16 @@ defmodule Exblog.Domain.Site do
   @doc false
   def changeset(site, attrs) do
     site
-    |> cast(attrs, [:css, :host_name, :header, :footer, :twitter_handle, :title])
+    |> cast(attrs, [
+      :css,
+      :host_name,
+      :header,
+      :footer,
+      :twitter_handle,
+      :title,
+      :root_page,
+      :per_page
+    ])
     |> validate_required([:host_name])
   end
 end

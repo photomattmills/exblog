@@ -17,10 +17,10 @@ defmodule Exblog.Blog do
       [%Post{}, ...]
 
   """
-  def list_posts(page, site_id) do
+  def list_posts(page, site_id, post_limit \\ 5) do
     %{
       posts:
-        posts_query(site_id) |> limit(^post_limit()) |> offset(^post_offset(page)) |> Repo.all(),
+        posts_query(site_id) |> limit(^post_limit) |> offset(^post_offset(page)) |> Repo.all(),
       next_page: next_page(page, site_id),
       previous_page: page - 1
     }
@@ -63,10 +63,6 @@ defmodule Exblog.Blog do
 
   defp post_offset(page) do
     (page - 1) * post_limit()
-  end
-
-  def list_posts() do
-    Repo.all(Post)
   end
 
   @doc """
