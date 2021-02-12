@@ -8,6 +8,7 @@ defmodule Exblog.Domain.Site do
     field :header, :string
     field :footer, :string
     field :twitter_handle, :string
+    field :description, :string
     field :title, :string
     field :root_page, :string
     field :per_page, :integer
@@ -24,6 +25,7 @@ defmodule Exblog.Domain.Site do
       :header,
       :footer,
       :twitter_handle,
+      :description,
       :title,
       :root_page,
       :per_page

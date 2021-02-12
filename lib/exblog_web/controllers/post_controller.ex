@@ -98,12 +98,13 @@ defmodule ExblogWeb.PostController do
   defp default_assigns(conn, [first_post | _rest]) do
     [
       post_title: conn.assigns.site.title,
-      post_description: "Some pictures",
+      post_description: conn.assigns.site.description,
       og_image: first_post.og_image
     ]
   end
 
-  defp default_assigns(conn, []), do: [post_title: conn.assigns.site.title]
+  defp default_assigns(conn, []),
+    do: [post_title: conn.assigns.site.title, post_description: conn.assigns.site.description]
 
   defp post_assigns(%{title: title, og_image: og_image, description: description}) do
     [

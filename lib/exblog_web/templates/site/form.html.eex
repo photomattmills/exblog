@@ -17,6 +17,10 @@
   <%= text_input f, :twitter_handle %>
   <%= error_tag f, :twitter_handle %><br />
 
+  <%= label f, :description %><br />
+  <%= text_input f, :description %>
+  <%= error_tag f, :description %><br />
+
   <%= label f, :root_page %><br />
   <%= text_input f, :root_page %>
   <%= error_tag f, :root_page %><br />
