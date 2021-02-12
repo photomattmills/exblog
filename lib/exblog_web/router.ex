@@ -34,6 +34,7 @@ defmodule ExblogWeb.Router do
     get "/logout", LoginController, :logout
     post "/login", LoginController, :do_login
     get "/rss", PostController, :rss
+    get "/:post_slug", PostController, :show_by_slug
   end
 
   scope "/", ExblogWeb do
