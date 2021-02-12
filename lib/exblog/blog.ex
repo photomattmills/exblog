@@ -45,7 +45,7 @@ defmodule Exblog.Blog do
   defp posts_query(site_id) do
     from(p in Post,
       where: not is_nil(p.published_at),
-      where: [site_id: ^site_id],
+      where: [site_id: ^site_id, page_only: false],
       order_by: [desc: :published_at]
     )
   end

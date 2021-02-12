@@ -26,6 +26,9 @@
   <%= label f, :published %>
   <%= checkbox f, :published, value: published(@post) %>
 
+  <%= label f, :page_only %>
+  <%= checkbox f, :page_only, value: published(@post) %>
+
   <%= hidden_input f, :site_id, value: @site.id %>
 
   <div>

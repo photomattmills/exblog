@@ -10,6 +10,7 @@ defmodule Exblog.Blog.Post do
     field :published_at, :utc_datetime
     field :slug, :string
     field :title, :string
+    field :page_only, :boolean
 
     belongs_to :site, Exblog.Domain.Site
     has_many :images, Image
