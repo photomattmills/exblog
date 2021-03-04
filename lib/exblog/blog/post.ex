@@ -22,7 +22,16 @@ defmodule Exblog.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :og_image, :description, :body, :slug, :published_at, :site_id])
+    |> cast(attrs, [
+      :title,
+      :og_image,
+      :description,
+      :body,
+      :slug,
+      :published_at,
+      :site_id,
+      :post_only
+    ])
     |> validate_required([:title, :body])
     |> add_slug_to_changeset()
   end
