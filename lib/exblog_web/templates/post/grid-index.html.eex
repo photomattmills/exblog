@@ -6,7 +6,7 @@
 <%= for post <- @posts do %>
   <div class="grid_cell">
   <a href="<%= Routes.post_path(@conn, :show_by_slug, post.slug) %>"><img src="<%= post.og_image %>"/></a>
-  <span class="title"><a href="<%= Routes.post_path(@conn, :show_by_slug, post.slug) %>"><%= post.title %></a></span>
+  <span class="title"><a href="<%= Routes.post_path(@conn, :show_by_slug, post.slug) %>"><%= post.title %></a></span> // 
   <%= if post.buy_link do %>
     <a href="<%= post.buy_link %>">Buy</a>
   <% else %>
