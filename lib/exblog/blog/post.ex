@@ -5,6 +5,7 @@ defmodule Exblog.Blog.Post do
 
   schema "posts" do
     field :body, :string
+    field :buy_link, :string
     field :description, :string
     field :og_image, :string
     field :published_at, :utc_datetime

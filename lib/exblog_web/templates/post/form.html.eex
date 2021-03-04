@@ -19,6 +19,10 @@
   <%= text_input f, :description %>
   <%= error_tag f, :description %><br />
 
+  <%= label f, :buy_link %><br />
+  <%= text_input f, :buy_link %>
+  <%= error_tag f, :buy_link %><br />
+
   <%= label f, :body %><br />
   <%= textarea f, :body, rows: "50", cols: "120" %>
   <%= error_tag f, :body %><br />
