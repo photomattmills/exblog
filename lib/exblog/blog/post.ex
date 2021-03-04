@@ -30,7 +30,7 @@ defmodule Exblog.Blog.Post do
       :slug,
       :published_at,
       :site_id,
-      :post_only
+      :page_only
     ])
     |> validate_required([:title, :body])
     |> add_slug_to_changeset()
