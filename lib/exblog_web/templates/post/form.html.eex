@@ -53,7 +53,7 @@
   <% end %>
   <div class="images-grid">
   <%= for image <- @post.images do %>
-    <div class="images-grid-cell"
+    <div class="images-grid-cell">
       <%= img_tag(image.url, style: "width: 300px") %>
       <%= image.url %>
       <%= link "delete", to: "/images/#{image.id}/delete"%>
