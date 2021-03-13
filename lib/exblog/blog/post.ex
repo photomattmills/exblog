@@ -12,6 +12,7 @@ defmodule Exblog.Blog.Post do
     field :slug, :string
     field :title, :string
     field :page_only, :boolean
+    field :is_retail, :boolean
 
     belongs_to :site, Exblog.Domain.Site
     has_many :images, Image
@@ -22,7 +23,7 @@ defmodule Exblog.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, __MODULE__.__schema__(:fields))
+    |> cast(attrs, __schema__(:fields))
     |> validate_required([:title, :body])
     |> add_slug_to_changeset()
   end

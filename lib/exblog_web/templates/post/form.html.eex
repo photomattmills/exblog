@@ -33,6 +33,9 @@
   <%= label f, :page_only %>
   <%= checkbox f, :page_only %>
 
+  <%= label f, :is_retail %>
+  <%= checkbox f, :is_retail %>
+
   <%= hidden_input f, :site_id, value: @site.id %>
 
   <div>

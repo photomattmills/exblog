@@ -2,7 +2,8 @@
 <div class="post">
   <%= if @post.buy_link do %>
     <a href="<%= @post.buy_link %>">Buy this bag!</a>
-  <% else %>
+  <% end %>
+  <%= if @post.is_retail do %>
     <a href="mailto:matt@mills.studio?subject=Custom <%= @post.title %> Request&body=Hello! I am interested in a custom bag. I would like to carry <insert things you want to carry here>." target="_blank">Request Custom</a>
   <% end %>
   <%= {:safe, Earmark.as_html!(@post.body, [])} %>
