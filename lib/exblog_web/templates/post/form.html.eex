@@ -53,6 +53,7 @@
   <% end %>
   <%= for image <- @post.images do %>
     <%= img_tag(image.url, style: "width: 300px") %>
+    <%= image.url %>
     <%= link "delete", to: "/images/#{image.id}/delete"%>
   <% end %>
 </div>
