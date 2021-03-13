@@ -51,9 +51,13 @@
     <%= submit "Save" %>
 
   <% end %>
+  <div class="images-grid">
   <%= for image <- @post.images do %>
-    <%= img_tag(image.url, style: "width: 300px") %>
-    <%= image.url %>
-    <%= link "delete", to: "/images/#{image.id}/delete"%>
+    <div class="images-grid-cell"
+      <%= img_tag(image.url, style: "width: 300px") %>
+      <%= image.url %>
+      <%= link "delete", to: "/images/#{image.id}/delete"%>
+    </div>
   <% end %>
+  </div>
 </div>
