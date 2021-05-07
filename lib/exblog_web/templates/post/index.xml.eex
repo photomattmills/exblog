@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
-    <title>Not Untitled</title>
-    <link>https://matt.pictures/</link>
+    <title><%= site.title %></title>
+    <link>https://<%= site.domain %>/</link>
     <language>en-us</language>
     <ttl>40</ttl>
-    <description>My name is Matt Mills. I spit hot photos.</description>
+    <description><%= site.description %></description>
     <%= for post <- @posts do %>
     <item>
       <title><%= post.title %></title>

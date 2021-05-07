@@ -40,7 +40,7 @@ defmodule ExblogWeb.PostController do
 
     conn
     |> put_resp_content_type("text/xml")
-    |> render("index.xml", posts: posts)
+    |> render("index.xml", posts: posts, site: conn.assigns.site)
   end
 
   def admin_index(conn, _params) do
