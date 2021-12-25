@@ -25,19 +25,6 @@ defmodule ExblogWeb.Router do
   end
 
   scope "/", ExblogWeb do
-    pipe_through :browser
-
-    get "/", PostController, :index
-    get "/page/:page", PostController, :index
-    get "/post/:post_slug", PostController, :show_by_slug
-    get "/login", LoginController, :login
-    get "/logout", LoginController, :logout
-    post "/login", LoginController, :do_login
-    get "/rss", PostController, :rss
-    get "/:post_slug", PostController, :show_by_slug
-  end
-
-  scope "/", ExblogWeb do
     pipe_through :logged_in
 
     resources "/posts", PostController, except: [:index, :delete]
@@ -48,6 +35,19 @@ defmodule ExblogWeb.Router do
     get "/images/:id/delete", ImageController, :delete
 
     resources "/sites", SiteController
+  end
+
+  scope "/", ExblogWeb do
+    pipe_through :browser
+
+    get "/", PostController, :index
+    get "/page/:page", PostController, :index
+    get "/post/:post_slug", PostController, :show_by_slug
+    get "/login", LoginController, :login
+    get "/logout", LoginController, :logout
+    post "/login", LoginController, :do_login
+    get "/rss", PostController, :rss
+    get "/:post_slug", PostController, :show_by_slug
   end
 
   # Other scopes may use custom stacks.
