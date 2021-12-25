@@ -10,16 +10,7 @@ defmodule ExblogWeb.SitePlug do
   end
 
   def default_site(conn) do
-    %{
-      id: 1,
-      host_name: conn.host,
-      css: default_css(),
-      header: default_header(),
-      footer: default_footer(),
-      twitter_handle: "@photomattmills",
-      title: "matt's pictures",
-      root_page: nil
-    }
+    Exblog.Repo.get(Exblog.Domain.Site, 1)
   end
 
   def default_css do
