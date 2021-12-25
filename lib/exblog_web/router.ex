@@ -40,10 +40,6 @@ defmodule ExblogWeb.Router do
   scope "/", ExblogWeb do
     pipe_through :browser
 
-    get "/robots.txt" do
-      send_resp(conn, 200, "ok")
-    end
-
     get "/", PostController, :index
     get "/page/:page", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
