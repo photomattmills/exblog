@@ -24,10 +24,6 @@ defmodule ExblogWeb.Router do
     plug :accepts, ["json"]
   end
 
-  get "/robots.txt" do
-    send_resp(conn, 200, "ok")
-  end
-
   scope "/", ExblogWeb do
     pipe_through :logged_in
 
@@ -43,6 +39,10 @@ defmodule ExblogWeb.Router do
 
   scope "/", ExblogWeb do
     pipe_through :browser
+
+    get "/robots.txt" do
+      send_resp(conn, 200, "ok")
+    end
 
     get "/", PostController, :index
     get "/page/:page", PostController, :index
