@@ -10,6 +10,8 @@ defmodule Exblog.BlogTest do
       body: "some body",
       description: "some description",
       og_image: "some og_image",
+      is_retail: false,
+      page_only: false,
       title: "some title"
     }
     @update_attrs %{

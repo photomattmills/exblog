@@ -34,7 +34,8 @@ defmodule Exblog.Blog.Post do
 
   defp add_slug_to_changeset(changeset = %{valid?: false}), do: changeset
 
-  defp add_slug_to_changeset(changeset = %{changes: %{title: title}}) when title != nil do
+  defp add_slug_to_changeset(changeset = %{changes: %{title: title}, data: %{slug: slug}})
+       when title != nil and slug == nil do
     put_change(changeset, :slug, title_slug(title))
   end
 

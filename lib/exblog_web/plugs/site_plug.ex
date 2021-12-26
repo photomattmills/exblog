@@ -4,13 +4,24 @@ defmodule ExblogWeb.SitePlug do
 
   def call(conn, _default) do
     Logger.error("conn.host: #{conn.host}")
-    site = Exblog.Repo.get_by(Exblog.Domain.Site, host_name: conn.host) || default_site(conn)
+    site = Exblog.Repo.get_by(Exblog.Domain.Site, host_name: conn.host) || default_site()
 
     Plug.Conn.assign(conn, :site, site)
   end
 
-  def default_site(conn) do
-    Exblog.Repo.get(Exblog.Domain.Site, 1)
+  def default_site do
+    Exblog.Repo.get(Exblog.Domain.Site, 1) ||
+      %{
+        id: 1,
+        host_name: "example.com",
+        description: "no",
+        css: default_css(),
+        header: default_header(),
+        footer: default_footer(),
+        twitter_handle: "@photomattmills",
+        title: "matt's pictures",
+        root_page: nil
+      }
   end
 
   def default_css do

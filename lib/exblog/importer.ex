@@ -16,9 +16,9 @@ defmodule Exblog.Importer do
     title = extract_text(post, "title")
     published_at = extract_text(post, "pubdate")
     post_body = extract_text(post, "description")
-    IO.puts title
 
-    maybe_local_post = Repo.get_by(Post, [title: title, published_at: published_at])
+    maybe_local_post = Repo.get_by(Post, title: title, published_at: published_at)
+
     if !maybe_local_post do
       {:ok, local_post} = Repo.insert(%Post{})
 
@@ -54,7 +54,9 @@ defmodule Exblog.Importer do
   end
 
   defp move_images_to_s3(images, post_id, slug) do
-    images |> Enum.map(fn image -> move_image_to_s3(image, post_id, slug) end) |> Enum.reject(fn a -> a == nil end)
+    images
+    |> Enum.map(fn image -> move_image_to_s3(image, post_id, slug) end)
+    |> Enum.reject(fn a -> a == nil end)
   end
 
   defp move_image_to_s3(image, post_id, slug) do
@@ -70,7 +72,9 @@ defmodule Exblog.Importer do
       File.rm(tmp_file_path(filename))
       %{original: image, new: repo_image}
     else
-      something -> IO.inspect(something, label: "error!"); nil
+      something ->
+        IO.inspect(something, label: "error!")
+        nil
     end
   end
 
@@ -90,7 +94,6 @@ defmodule Exblog.Importer do
 
   defp http_get_body(url) do
     case :hackney.get(url, [], "", follow_redirect: true) do
-
       {:ok, 200, _headers, client_ref} -> :hackney.body(client_ref)
       _ -> :error
     end

@@ -6,7 +6,7 @@ defmodule Exblog.DomainTest do
   describe "sites" do
     alias Exblog.Domain.Site
 
-    @valid_attrs %{css: "some css", host_name: "some host_name"}
+    @valid_attrs %{css: "some css", host_name: "some host_name", per_page: 5}
     @update_attrs %{css: "some updated css", host_name: "some updated host_name"}
     @invalid_attrs %{css: nil, host_name: nil}
 
