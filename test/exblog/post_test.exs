@@ -9,7 +9,7 @@ defmodule Exblog.PostTest do
       changeset = Post.changeset(%Post{}, attrs)
 
       assert changeset.valid?
-      assert changeset.changes.slug == "this_is_a_title"
+      assert changeset.changes.slugs == ["this_is_a_title"]
     end
 
     test "it doesn't change the slug once it's set" do
@@ -21,7 +21,7 @@ defmodule Exblog.PostTest do
 
       new_changeset = Post.changeset(post, new_attrs)
 
-      refute Map.get(new_changeset.changes, :slug)
+      assert new_changeset.changes.slugs == ["this_is_a_new_title", "this_is_a_title"]
     end
   end
 end

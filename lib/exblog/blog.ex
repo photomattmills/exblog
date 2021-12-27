@@ -81,7 +81,9 @@ defmodule Exblog.Blog do
   """
   def get_post!(id), do: Repo.get!(Post, id) |> Repo.preload(:images)
 
-  def get_post_by_slug!(slug), do: Repo.get_by(Post, slug: slug)
+  def get_post_by_slug!(slug) do
+    from(p in Post, where: ^slug in p.slugs) |> Repo.all() |> hd()
+  end
 
   @doc """
   Creates a post.
