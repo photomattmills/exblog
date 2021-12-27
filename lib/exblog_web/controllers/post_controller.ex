@@ -62,8 +62,17 @@ defmodule ExblogWeb.PostController do
   end
 
   def show_by_slug(conn, %{"post_slug" => slug}) do
-    post = Blog.get_post_by_slug!(slug)
-    render(conn, "show.html", [post: post] ++ post_assigns(post))
+    post = %{slugs: [newest | _rest]} = Blog.get_post_by_slug!(slug)
+
+    cond do
+      slug == newest ->
+        render(conn, "show.html", [post: post] ++ post_assigns(post))
+
+      true ->
+        conn
+        |> put_status(301)
+        |> redirect(to: Routes.post_path(conn, :show_by_slug, newest))
+    end
   end
 
   def edit(conn, %{"id" => id}) do
