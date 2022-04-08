@@ -16,7 +16,7 @@
   <tr>
     <td><%= post.published_at %></td>
     <td><%= post.id %></td>
-    <td><%= link post.title, to: Routes.post_path(@conn, :show_by_slug, (post.slug || "404")) %></td>
+    <td><%= link post.title, to: Routes.post_path(@conn, :show_by_slug, (hd(post.slugs) || "404")) %></td>
     <td><%= String.slice(post.body, 0, 50) %></td>
     <td><%= link "edit", to: Routes.post_path(@conn, :edit, post.id)%></td>
     <td><%= link "delete", to: Routes.post_path(@conn, :delete, post.id) %></td>
