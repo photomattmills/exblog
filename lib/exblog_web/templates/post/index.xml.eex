@@ -13,8 +13,8 @@
         <%= Earmark.as_html!(post.body, []) |> escape_xml() %>
       </description>
       <pubDate><%= post.published_at %></pubDate>
-      <guid><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, post.slug)}" %></guid>
-      <link><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, post.slug)}" %></link>
+      <guid><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, (hd(post.slugs) || "404"))}" %></guid>
+      <link><%= "https://#{@site.host_name}#{Routes.post_path(@conn, :show_by_slug, (hd(post.slugs) || "404"))}" %></link>
     </item>
     <% end %>
 
