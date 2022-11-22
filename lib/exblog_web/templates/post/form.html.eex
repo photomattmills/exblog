@@ -45,18 +45,20 @@
 </div>
 <div class="image_editor">
   <h3>Images</h3>
+  <p>
   <%= form_for :image_upload, Routes.image_path(@conn, :create), [multipart: true], fn f -> %>
     <%= file_input f, :images, class: "form-control", multiple: true%>
     <%= hidden_input f, :post_id, value: @post.id %>
     <%= submit "Save" %>
 
   <% end %>
+</p>
   <div class="images-grid">
   <%= for image <- @post.images do %>
     <div class="images-grid-cell">
       <%= img_tag(image.url, style: "width: 300px") %>
-      <p><%= image.url %></p>
-      <p><%= link "delete", to: "/images/#{image.id}/delete"%></p>
+      <p style="margin:0;"><%= image.url %></p>
+      <p style="margin:0;"><%= link "delete", to: "/images/#{image.id}/delete"%></p>
     </div>
   <% end %>
   </div>
