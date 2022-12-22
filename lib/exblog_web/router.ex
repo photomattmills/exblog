@@ -47,7 +47,7 @@ defmodule ExblogWeb.Router do
     get "/logout", LoginController, :logout
     post "/login", LoginController, :do_login
     get "/rss", PostController, :rss
-    get "/:post_slug", PostController, :show_by_slug
+    get "/:post_slug", PostController, :show_by_slug, as: "root_post"
   end
 
   # Other scopes may use custom stacks.

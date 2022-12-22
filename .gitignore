@@ -35,3 +35,4 @@ npm-debug.log
 
 #ignore local logs
 /logs/
+.DS_Store
