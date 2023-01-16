@@ -40,7 +40,7 @@ defmodule Exblog.MixProject do
       {:hackney, "~> 1.9"},
       {:meeseeks, "~> 0.15.1"},
       {:sweet_xml, "~> 0.6"},
-      {:phoenix, "~> 1.5.4"},
+      {:phoenix, "~> 1.6.15"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
@@ -49,7 +49,7 @@ defmodule Exblog.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.2"},
+      {:plug_cowboy, "~> 2.6"},
       {:logger_file_backend, "~> 0.0.11"}
     ]
   end
