@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :exblog,
   ecto_repos: [Exblog.Repo],
@@ -25,7 +25,8 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :logger, backends: [{LoggerFileBackend, :request_log}],
+config :logger,
+  backends: [{LoggerFileBackend, :request_log}],
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
@@ -35,7 +36,7 @@ config :logger, backends: [{LoggerFileBackend, :request_log}],
 # Note: Remember to specify the format along with the metadata required.
 # Configurable per LoggerFileBackend.
 config :logger, :request_log,
-  path: "logs/request.#{Mix.env}.log",
+  path: "logs/request.#{Mix.env()}.log",
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
