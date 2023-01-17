@@ -4,9 +4,10 @@ defmodule ExblogWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
+    plug :fetch_live_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :put_root_layout, {ExblogWeb.LayoutView, :app}
     plug ExblogWeb.SitePlug
   end
 
@@ -48,6 +49,15 @@ defmodule ExblogWeb.Router do
     post "/login", LoginController, :do_login
     get "/rss", PostController, :rss
     get "/:post_slug", PostController, :show_by_slug, as: "root_post"
+  end
+
+  scope "/live", ExblogWeb do
+    live "/posts", PostLive.Index, :index
+    live "/posts/new", PostLive.Index, :new
+    live "/posts/:id/edit", PostLive.Index, :edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

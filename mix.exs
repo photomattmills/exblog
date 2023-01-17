@@ -7,7 +7,7 @@ defmodule Exblog.MixProject do
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -35,19 +35,21 @@ defmodule Exblog.MixProject do
     [
       {:bcrypt_elixir, ">= 0.0.0"},
       {:earmark, ">= 1.4.3"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:floki, ">= 0.30.0", only: :test},
       {:hackney, "~> 1.9"},
-      {:meeseeks, "~> 0.15.1"},
+      # {:meeseeks, "~> 0.15.1"},
       {:sweet_xml, "~> 0.6"},
       {:phoenix, "~> 1.6.15"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_view, "~> 0.18"},
+      {:phoenix_html, "~> 3.2"},
+      {:phoenix_live_view, "~> 0.18.8"},
+      {:phoenix_live_dashboard, "~> 0.7.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
@@ -66,7 +68,8 @@ defmodule Exblog.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end
