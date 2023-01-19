@@ -2,7 +2,7 @@ defmodule ExblogWeb.SitePlug do
   require Logger
   def init(options), do: options
 
-  def call(conn, _default) do
+  def call(conn, _default \\ %{}) do
     Logger.error("conn.host: #{conn.host}")
     site = Exblog.Repo.get_by(Exblog.Domain.Site, host_name: conn.host) || default_site()
 

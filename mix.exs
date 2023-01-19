@@ -48,7 +48,7 @@ defmodule Exblog.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.2"},
-      {:phoenix_live_view, "~> 0.18.8"},
+      {:phoenix_live_view, "~> 0.18.10"},
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.18"},

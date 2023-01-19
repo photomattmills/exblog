@@ -127,6 +127,10 @@ defmodule Exblog.Blog do
     Map.merge(attrs, %{"published_at" => DateTime.utc_now()})
   end
 
+  defp add_published_at(_post, attrs = %{"published" => "false"}) do
+    Map.merge(attrs, %{"published_at" => nil})
+  end
+
   defp add_published_at(_, attrs), do: attrs
 
   @doc """

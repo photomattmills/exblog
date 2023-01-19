@@ -40,7 +40,6 @@ defmodule ExblogWeb.Router do
 
   scope "/", ExblogWeb do
     pipe_through :browser
-
     get "/", PostController, :index
     get "/page/:page", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
@@ -52,12 +51,10 @@ defmodule ExblogWeb.Router do
   end
 
   scope "/live", ExblogWeb do
-    live "/posts", PostLive.Index, :index
-    live "/posts/new", PostLive.Index, :new
-    live "/posts/:id/edit", PostLive.Index, :edit
+    pipe_through :logged_in
 
-    live "/posts/:id", PostLive.Show, :show
-    live "/posts/:id/show/edit", PostLive.Show, :edit
+    live "/posts/:id", PostLive.Edit, :edit
+    live "/posts/:id/edit", PostLive.Edit, :edit
   end
 
   # Other scopes may use custom stacks.

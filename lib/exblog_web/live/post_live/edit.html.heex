@@ -1,0 +1,43 @@
+<div style="
+  width: 98vw;
+  margin-left: calc((100% - 98vw) / 2);
+  display: grid;
+  column-gap: 1em;
+  grid-template-columns: auto auto;
+">
+<div style="grid-column: 1;">
+<.form
+    :let={f}
+    for={@changeset}
+    id="post-form"
+    phx-change="save"
+    phx-submit="save">
+
+    <%= label f, :title %>:
+    <%= text_input f, :title %><br />
+    <%= textarea f, :body, rows: "20", cols: "80" %><br />
+
+    <%= label f, :published %>
+    <%= checkbox f, :published, value: @published %><br />
+    <%= label f, :page_only %>
+    <%= checkbox f, :page_only %><br />
+    </.form>
+<form phx-submit="upload" phx-change="validate">
+      <div class="ui segment" phx-drop-target={@uploads.photo.ref}>
+       <.live_file_input upload={@uploads.photo} hidden="true" />
+       <p>
+        <%= if length(@uploads.photo.entries) > 0 do %>
+          Photos to upload: <%= length(@uploads.photo.entries) %>
+        <% else %>
+          Drop Photos here!
+        <% end %>
+       </p>
+       </div>
+       <button type="submit" text="upload" icon="upload" extra_attributes="labeled violet">submit</button>
+     </form>
+     </div>
+
+<div style="grid-column: 2; height: 90vh; overflow: scroll;">
+  <%= {:safe, Earmark.as_html!(@post.body, [])} %>
+</div>
+</div>

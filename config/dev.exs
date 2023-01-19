@@ -4,7 +4,7 @@ import Config
 config :exblog, Exblog.Repo,
   username: System.get_env("DATABASE_USER") || "postgres",
   password: System.get_env("DATABASE_PASSWORD") || "postgres",
-  database: "exblog_dev",
+  database: "exblog_dev_new",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
