@@ -22,7 +22,11 @@
     <%= label f, :page_only %>
     <%= checkbox f, :page_only %><br />
     </.form>
-<form phx-submit="upload" phx-change="validate">
+<.form
+  phx-submit="save_photos"
+  phx-change="validate"
+  for={:uploads}
+>
       <div class="ui segment" phx-drop-target={@uploads.photo.ref}>
        <.live_file_input upload={@uploads.photo} hidden="true" />
        <p>
@@ -33,8 +37,8 @@
         <% end %>
        </p>
        </div>
-       <button type="submit" text="upload" icon="upload" extra_attributes="labeled violet">submit</button>
-     </form>
+       <%= submit "Save" %>
+     </.form>
      </div>
 
 <div style="grid-column: 2; height: 90vh; overflow: scroll;">

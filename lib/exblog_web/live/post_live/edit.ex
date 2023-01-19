@@ -11,7 +11,8 @@ defmodule ExblogWeb.PostLive.Edit do
       |> assign(:uploaded_files, [])
       |> allow_upload(:photo,
         accept: ~w(.jpeg .jpg),
-        max_file_size: 5_000_000
+        max_file_size: 5_000_000,
+        max_entries: 50
       )
 
     {:ok, socket}
@@ -31,11 +32,18 @@ defmodule ExblogWeb.PostLive.Edit do
 
   @impl true
   def handle_event("validate", _params, socket) do
+    IO.puts("called validate !!!!!!!!")
     {:noreply, socket}
   end
 
-  def handle_event("upload", params, socket) do
-    IO.inspect(params, label: "paramas in save photo")
+  def handle_event("save_photos", _params, socket) do
+    consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
+      IO.inspect(entry, label: "file properties")
+      dest = Path.join("priv/static/uploads", entry.client_name)
+      File.cp!(path, dest)
+      {:ok, Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")}
+    end)
+
     {:noreply, socket}
   end
 
