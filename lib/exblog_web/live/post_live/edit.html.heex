@@ -22,22 +22,25 @@
     <%= label f, :page_only %>
     <%= checkbox f, :page_only %><br />
     </.form>
+
 <.form
   phx-submit="save_photos"
   phx-change="validate"
   for={:uploads}
 >
-      <div class="ui segment" phx-drop-target={@uploads.photo.ref}>
-       <.live_file_input upload={@uploads.photo} hidden="true" />
-       <p>
-        <%= if length(@uploads.photo.entries) > 0 do %>
-          Photos to upload: <%= length(@uploads.photo.entries) %>
-        <% else %>
-          Drop Photos here!
-        <% end %>
-       </p>
+      <div class="ui segment"
+        style="width: 100%;
+          height: 10em;
+          background-color: gray;
+          color: orange;"
+          phx-drop-target={@uploads.photo.ref}
+      >
+        <.live_file_input upload={@uploads.photo} hidden="true" />
+        <p style="text-align: center;
+          line-height: 8em;">
+          Drop photos here!
+        </p>
        </div>
-       <%= submit "Save" %>
      </.form>
      </div>
 

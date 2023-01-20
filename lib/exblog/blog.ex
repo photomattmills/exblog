@@ -7,6 +7,7 @@ defmodule Exblog.Blog do
   alias Exblog.Repo
 
   alias Exblog.Blog.Post
+  alias Exblog.Blog.Image
 
   @doc """
   Returns the list of posts.
@@ -160,5 +161,13 @@ defmodule Exblog.Blog do
   """
   def change_post(%Post{} = post) do
     Post.changeset(post, %{})
+  end
+
+  def change_post(%Post{} = post, changes) do
+    Post.changeset(post, changes)
+  end
+
+  def get_images(id_list) do
+    from(i in Image, where: i.id in ^id_list) |> Repo.all()
   end
 end

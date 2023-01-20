@@ -2,10 +2,7 @@ defmodule Exblog.ImageUploader do
   def upload(path, object_key) do
     path
     |> ExAws.S3.Upload.stream_file()
-    |> ExAws.S3.upload(bucket(), object_key,
-      content_type: "image/jpeg",
-      acl: :public_read
-    )
+    |> ExAws.S3.upload(bucket(), object_key, content_type: "image/jpeg", acl: :public_read)
     |> ExAws.request(region: "us-west-2")
   end
 
