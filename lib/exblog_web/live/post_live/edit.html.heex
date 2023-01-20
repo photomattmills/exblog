@@ -16,7 +16,8 @@
     <%= label f, :title %>:
     <%= text_input f, :title %><br />
     <%= textarea f, :body, rows: "20", cols: "80" %><br />
-
+    <%= label f, :og_image, "Featured Image" %>:
+    <%= text_input f, :og_image %><br />
     <%= label f, :published %>
     <%= checkbox f, :published, value: @published %><br />
     <%= label f, :page_only %>
