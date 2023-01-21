@@ -8,8 +8,6 @@ defmodule ExblogWeb.PostLive.Edit do
 
   @impl true
   def mount(_params, _session, socket) do
-    Logger.error("mount!")
-
     socket =
       socket
       |> assign(:site, ExblogWeb.SitePlug.default_site())
@@ -22,6 +20,7 @@ defmodule ExblogWeb.PostLive.Edit do
         max_entries: 50
       )
 
+    Logger.error("mount!")
     {:ok, socket}
   end
 
