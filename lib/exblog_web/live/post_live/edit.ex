@@ -1,5 +1,6 @@
 defmodule ExblogWeb.PostLive.Edit do
   use ExblogWeb, :live_view
+  require Logger
 
   alias Exblog.Blog
   alias Exblog.Blog.Image
