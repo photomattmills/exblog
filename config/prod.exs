@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :exblog, ExblogWeb.Endpoint,
-  url: [host: "matt.pictures", port: 80],
+  url: [host: "matt.pictures"],
   check_origin: ["//matt.pictures", "//sophia.red"]
 
 config(:exblog,
