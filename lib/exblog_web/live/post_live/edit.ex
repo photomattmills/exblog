@@ -36,28 +36,7 @@ defmodule ExblogWeb.PostLive.Edit do
 
   @impl true
   def handle_event("validate", _params, socket) do
-    IO.puts("called validate !!!!!!!!")
     {:noreply, socket}
-  end
-
-  def handle_event("save_photos", _params, socket) do
-    IO.puts("saving photos!")
-
-    repo_images =
-      consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
-        repo_image = save_and_upload_image(path, entry.client_name, socket.assigns.post.id)
-        {:ok, repo_image}
-      end)
-
-    post = socket.assigns.post
-    image_addons = post_update(repo_images)
-    new_body = post.body <> image_addons
-    {:ok, saved_post} = Blog.update_post(post, %{body: new_body})
-
-    {:noreply,
-     socket
-     |> assign(:post, saved_post)
-     |> assign(:changeset, saved_post)}
   end
 
   def handle_event("save", %{"post" => post_params}, socket) do
