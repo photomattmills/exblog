@@ -7,6 +7,8 @@ defmodule ExblogWeb.PostLive.Edit do
 
   @impl true
   def mount(_params, _session, socket) do
+    Logger.error("mount!")
+
     socket =
       socket
       |> assign(:site, ExblogWeb.SitePlug.default_site())
