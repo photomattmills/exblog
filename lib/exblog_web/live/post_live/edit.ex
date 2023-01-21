@@ -41,8 +41,9 @@ defmodule ExblogWeb.PostLive.Edit do
   end
 
   def handle_event("save", %{"post" => post_params}, socket) do
+    Logger.error("hit save")
+
     case Blog.update_post(socket.assigns.post, post_params) do
-      Logger.error("hit save")
       {:ok, post} ->
         {:noreply,
          socket
