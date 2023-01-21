@@ -11,7 +11,7 @@ use Mix.Config
 # before starting your production server.
 config :exblog, ExblogWeb.Endpoint,
   url: [host: "matt.pictures", port: 80],
-  check_origin: ["https://matt.pictures", "https://sophia.red"]
+  check_origin: ["matt.pictures", "sophia.red"]
 
 config(:exblog,
   s3_bucket: "mattdotpicturesimages",
