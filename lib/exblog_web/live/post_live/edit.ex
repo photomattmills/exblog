@@ -20,7 +20,6 @@ defmodule ExblogWeb.PostLive.Edit do
         max_entries: 50
       )
 
-    Logger.error("mount!")
     {:ok, socket}
   end
 
