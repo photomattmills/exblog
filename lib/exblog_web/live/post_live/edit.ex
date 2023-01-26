@@ -48,7 +48,7 @@ defmodule ExblogWeb.PostLive.Edit do
           socket
           |> assign(:post, post)
           |> assign(:published, !!post.published_at)
-          #  |> assign(:changeset, Blog.change_post(post))
+          |> assign(:changeset, Blog.change_post(post))
         }
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -64,7 +64,7 @@ defmodule ExblogWeb.PostLive.Edit do
           socket
           |> assign(:post, post)
           |> assign(:published, !!post.published_at)
-          #  |> assign(:changeset, Blog.change_post(post))
+          |> assign(:changeset, Blog.change_post(post))
         }
 
       {:error, %Ecto.Changeset{} = changeset} ->

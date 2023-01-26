@@ -49,6 +49,8 @@
      </div>
 
 <div style="grid-column: 2; height: 95vh; overflow: scroll;">
+  <h2><%= @post.title %></h2>
+
   <%= {:safe, Earmark.as_html!(@post.body, [])} %>
 </div>
 </div>
