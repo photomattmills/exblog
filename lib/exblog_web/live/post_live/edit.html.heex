@@ -6,6 +6,7 @@
   grid-template-columns: auto auto;
 ">
 <div style="grid-column: 1;">
+
 <.form
     :let={f}
     for={@changeset}
@@ -14,7 +15,8 @@
     phx-submit="save">
 
     <%= label f, :title %>:
-    <%= text_input f, :title %><br />
+    <%= text_input f, :title, "phx-blur": "title" %><br />
+
     <%= textarea f, :body, rows: "20", cols: "80" %><br />
     <%= label f, :og_image, "Featured Image" %>:
     <%= text_input f, :og_image %><br />

@@ -41,13 +41,31 @@ defmodule ExblogWeb.PostLive.Edit do
   end
 
   def handle_event("save", %{"post" => post_params}, socket) do
-    case Blog.update_post(socket.assigns.post, post_params) do
+    case Blog.update_post(socket.assigns.post, Map.delete(post_params, "title")) do
       {:ok, post} ->
-        {:noreply,
-         socket
-         |> assign(:post, post)
-         |> assign(:published, !!post.published_at)
-         |> assign(:changeset, Blog.change_post(post))}
+        {
+          :noreply,
+          socket
+          |> assign(:post, post)
+          |> assign(:published, !!post.published_at)
+          #  |> assign(:changeset, Blog.change_post(post))
+        }
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
+  end
+
+  def handle_event("title", %{"value" => title}, socket) do
+    case Blog.update_post(socket.assigns.post, %{title: title}) do
+      {:ok, post} ->
+        {
+          :noreply,
+          socket
+          |> assign(:post, post)
+          |> assign(:published, !!post.published_at)
+          #  |> assign(:changeset, Blog.change_post(post))
+        }
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
