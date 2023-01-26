@@ -46,7 +46,8 @@ defmodule ExblogWeb.PostLive.Edit do
         {:noreply,
          socket
          |> assign(:post, post)
-         |> assign(:published, !!post.published_at)}
+         |> assign(:published, !!post.published_at)
+         |> assign(:changeset, Blog.change_post(post))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
