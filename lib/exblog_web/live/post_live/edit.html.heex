@@ -54,4 +54,5 @@
   <%= {:safe, Earmark.as_html!(@post.body, [])} %>
 </div>
 Saved at <%= @post.updated_at %>
+<%= link "Go to Post", to: Routes.post_path(:conn, :show, @post.id) %>
 </div>
