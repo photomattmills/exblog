@@ -8,7 +8,7 @@
     <description><%= @site.description %></description>
     <%= for post <- @posts do %>
     <item>
-      <title><%= post.title %></title>
+      <title><%= Earmark.as_html!(post.title, []) |> escape_xml() %></title>
       <description>
         <%= Earmark.as_html!(post.body, []) |> escape_xml() %>
       </description>
