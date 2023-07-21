@@ -5,7 +5,7 @@
   column-gap: 1em;
   grid-template-columns: auto auto;
 ">
-<div style="grid-column: 1;">
+<div style="grid-column: 1fr 1fr;">
 
 <.form
     :let={f}
@@ -17,7 +17,7 @@
     <%= label f, :title %>:
     <%= text_input f, :title, "phx-blur": "title" %><br />
 
-    <%= textarea f, :body, rows: "20" %><br />
+    <%= textarea f, :body, rows: "20", style: "width: 100%;" %><br />
     <%= label f, :og_image, "Featured Image" %>:
     <%= text_input f, :og_image %><br />
     <%= label f, :published %>
