@@ -21,7 +21,6 @@ defmodule ExblogWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    # resources "/users", UserController
     resources "/posts", PostController
     resources "/sites", SiteController
   end
