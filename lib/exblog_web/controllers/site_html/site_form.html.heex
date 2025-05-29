@@ -1,0 +1,17 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:css]} type="text" label="Css" />
+  <.input field={f[:host_name]} type="text" label="Host name" />
+  <.input field={f[:header]} type="text" label="Header" />
+  <.input field={f[:footer]} type="text" label="Footer" />
+  <.input field={f[:twitter_handle]} type="text" label="Twitter handle" />
+  <.input field={f[:description]} type="text" label="Description" />
+  <.input field={f[:title]} type="text" label="Title" />
+  <.input field={f[:root_page]} type="text" label="Root page" />
+  <.input field={f[:per_page]} type="number" label="Per page" />
+  <:actions>
+    <.button>Save Site</.button>
+  </:actions>
+</.simple_form>

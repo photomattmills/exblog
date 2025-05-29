@@ -6,12 +6,12 @@ defmodule ExblogWeb.SiteController do
 
   def index(conn, _params) do
     sites = Domain.list_sites()
-    render(conn, "index.html", sites: sites)
+    render(conn, :index, sites: sites)
   end
 
   def new(conn, _params) do
     changeset = Domain.change_site(%Site{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, :new, changeset: changeset)
   end
 
   def create(conn, %{"site" => site_params}) do
@@ -19,22 +19,22 @@ defmodule ExblogWeb.SiteController do
       {:ok, site} ->
         conn
         |> put_flash(:info, "Site created successfully.")
-        |> redirect(to: Routes.site_path(conn, :show, site))
+        |> redirect(to: ~p"/sites/#{site}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, :new, changeset: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
     site = Domain.get_site!(id)
-    render(conn, "show.html", site: site)
+    render(conn, :show, site: site)
   end
 
   def edit(conn, %{"id" => id}) do
     site = Domain.get_site!(id)
     changeset = Domain.change_site(site)
-    render(conn, "edit.html", site: site, changeset: changeset)
+    render(conn, :edit, site: site, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "site" => site_params}) do
@@ -44,10 +44,10 @@ defmodule ExblogWeb.SiteController do
       {:ok, site} ->
         conn
         |> put_flash(:info, "Site updated successfully.")
-        |> redirect(to: Routes.site_path(conn, :show, site))
+        |> redirect(to: ~p"/sites/#{site}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", site: site, changeset: changeset)
+        render(conn, :edit, site: site, changeset: changeset)
     end
   end
 
@@ -57,6 +57,6 @@ defmodule ExblogWeb.SiteController do
 
     conn
     |> put_flash(:info, "Site deleted successfully.")
-    |> redirect(to: Routes.site_path(conn, :index))
+    |> redirect(to: ~p"/sites")
   end
 end

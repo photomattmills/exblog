@@ -1,0 +1,23 @@
+<.header>
+  Site {@site.id}
+  <:subtitle>This is a site record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/sites/#{@site}/edit"}>
+      <.button>Edit site</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Css">{@site.css}</:item>
+  <:item title="Host name">{@site.host_name}</:item>
+  <:item title="Header">{@site.header}</:item>
+  <:item title="Footer">{@site.footer}</:item>
+  <:item title="Twitter handle">{@site.twitter_handle}</:item>
+  <:item title="Description">{@site.description}</:item>
+  <:item title="Title">{@site.title}</:item>
+  <:item title="Root page">{@site.root_page}</:item>
+  <:item title="Per page">{@site.per_page}</:item>
+</.list>
+
+<.back navigate={~p"/sites"}>Back to sites</.back>

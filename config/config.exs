@@ -1,5 +1,5 @@
 # This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
+# and its dependencies with the aid of the Config module.
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
@@ -9,48 +9,58 @@ import Config
 
 config :exblog,
   ecto_repos: [Exblog.Repo],
-  s3_bucket: "mattdotpicturesimages-dev",
-  s3_base_url: "https://mattdotpicturesimages-dev.s3-us-west-2.amazonaws.com"
+  generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :exblog, ExblogWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "HcCRYcz39xJYs+tpsqDYlWfRfohDFIcyPqCeYH8SuzZ8KdQ8JZIX9allytZtZMRV",
-  render_errors: [view: ExblogWeb.ErrorView, accepts: ~w(html json)],
+  adapter: Bandit.PhoenixAdapter,
+  render_errors: [
+    formats: [html: ExblogWeb.ErrorHTML, json: ExblogWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Exblog.PubSub,
-  live_view: [signing_salt: "lGEPsLhy"]
+  live_view: [signing_salt: "8wCqHrKv"]
+
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/dev/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+config :exblog, Exblog.Mailer, adapter: Swoosh.Adapters.Local
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.17.11",
+  exblog: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.4.3",
+  exblog: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :logger,
-  backends: [{LoggerFileBackend, :request_log}],
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-# Keep a seperate log file for each env.
-# logs are stored in the root directory of the application
-# inside the logs folder.
-# Note: Remember to specify the format along with the metadata required.
-# Configurable per LoggerFileBackend.
-config :logger, :request_log,
-  path: "logs/request.#{Mix.env()}.log",
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :esbuild,
-  version: "0.12.18",
-  default: [
-    args: ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"

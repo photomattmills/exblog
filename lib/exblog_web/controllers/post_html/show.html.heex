@@ -1,0 +1,24 @@
+<.header>
+  Post {@post.id}
+  <:subtitle>This is a post record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/posts/#{@post}/edit"}>
+      <.button>Edit post</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Body">{@post.body}</:item>
+  <:item title="Buy link">{@post.buy_link}</:item>
+  <:item title="Description">{@post.description}</:item>
+  <:item title="Og image">{@post.og_image}</:item>
+  <:item title="Published at">{@post.published_at}</:item>
+  <:item title="Slug">{@post.slug}</:item>
+  <:item title="Slugs">{@post.slugs}</:item>
+  <:item title="Title">{@post.title}</:item>
+  <:item title="Page only">{@post.page_only}</:item>
+  <:item title="Is retail">{@post.is_retail}</:item>
+</.list>
+
+<.back navigate={~p"/posts"}>Back to posts</.back>

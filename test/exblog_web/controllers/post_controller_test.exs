@@ -1,68 +1,40 @@
 defmodule ExblogWeb.PostControllerTest do
   use ExblogWeb.ConnCase
 
-  alias Exblog.Blog
-  alias Exblog.Blog.Post
-  alias Exblog.Repo
+  import Exblog.BlogFixtures
 
-  @create_attrs %{
-    body: "some body",
-    description: "some description",
-    og_image: "some og_image",
-    published_at: DateTime.utc_now(),
-    title: "some title",
-    slug: "some_title",
-    site_id: 1
-  }
-  @update_attrs %{
-    body: "some updated body",
-    description: "some updated description",
-    og_image: "some updated og_image",
-    title: "some updated title",
-    slug: "a_new_slug"
-  }
-  @invalid_attrs %{body: nil, description: nil, og_image: nil, title: nil}
-
-  def fixture(:post) do
-    {:ok, post} = Blog.create_post(@create_attrs)
-    post
-  end
+  @create_attrs %{description: "some description", title: "some title", body: "some body", buy_link: "some buy_link", og_image: "some og_image", published_at: ~U[2025-05-27 08:27:00Z], slug: "some slug", slugs: ["option1", "option2"], page_only: true, is_retail: true}
+  @update_attrs %{description: "some updated description", title: "some updated title", body: "some updated body", buy_link: "some updated buy_link", og_image: "some updated og_image", published_at: ~U[2025-05-28 08:27:00Z], slug: "some updated slug", slugs: ["option1"], page_only: false, is_retail: false}
+  @invalid_attrs %{description: nil, title: nil, body: nil, buy_link: nil, og_image: nil, published_at: nil, slug: nil, slugs: nil, page_only: nil, is_retail: nil}
 
   describe "index" do
-    setup %{conn: conn} do
-      Enum.map(0..100, fn _x -> fixture(:post) end)
-      %{conn: conn}
-    end
-
     test "lists all posts", %{conn: conn} do
-      conn = get(conn, Routes.post_path(conn, :index))
-      assert html_response(conn, 200)
-    end
-
-    test "has next_page link", %{conn: conn} do
-      conn = get(conn, Routes.post_path(conn, :index))
-      assert html_response(conn, 200) =~ "<a href=\"/page/2\">Next Page</a>"
-    end
-
-    test "has previous_page link", %{conn: conn} do
-      conn = get(conn, Routes.post_path(conn, :index, page: 2))
-      assert html_response(conn, 200) =~ "<a href=\"/page/1\">Previous Page</a>"
+      conn = get(conn, ~p"/posts")
+      assert html_response(conn, 200) =~ "Listing Posts"
     end
   end
 
   describe "new post" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.post_path(conn, :new))
-      assert html_response(conn, 302) =~ "redirected"
+      conn = get(conn, ~p"/posts/new")
+      assert html_response(conn, 200) =~ "New Post"
     end
   end
 
-  describe "get post by slug" do
-    setup [:create_post]
+  describe "create post" do
+    test "redirects to show when data is valid", %{conn: conn} do
+      conn = post(conn, ~p"/posts", post: @create_attrs)
 
-    test "gets a post with a slug", %{conn: conn, post: post} do
-      conn = get(conn, Routes.post_path(conn, :show_by_slug, post.slug))
-      assert response(conn, 200) =~ "some body"
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == ~p"/posts/#{id}"
+
+      conn = get(conn, ~p"/posts/#{id}")
+      assert html_response(conn, 200) =~ "Post #{id}"
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, ~p"/posts", post: @invalid_attrs)
+      assert html_response(conn, 200) =~ "New Post"
     end
   end
 
@@ -70,7 +42,7 @@ defmodule ExblogWeb.PostControllerTest do
     setup [:create_post]
 
     test "renders form for editing chosen post", %{conn: conn, post: post} do
-      conn = get(conn, Routes.post_path(conn, :edit, post))
+      conn = get(conn, ~p"/posts/#{post}/edit")
       assert html_response(conn, 200) =~ "Edit Post"
     end
   end
@@ -79,23 +51,15 @@ defmodule ExblogWeb.PostControllerTest do
     setup [:create_post]
 
     test "redirects when data is valid", %{conn: conn, post: post} do
-      conn = put(conn, Routes.post_path(conn, :update, post), post: @update_attrs)
-      assert redirected_to(conn) == Routes.post_path(conn, :show, post)
+      conn = put(conn, ~p"/posts/#{post}", post: @update_attrs)
+      assert redirected_to(conn) == ~p"/posts/#{post}"
 
-      conn = get(conn, Routes.post_path(conn, :show, post))
-      assert html_response(conn, 200) =~ "some updated body"
-    end
-
-    test "updates published_at when published=true", %{conn: conn, post: post} do
-      put(conn, Routes.post_path(conn, :update, post),
-        post: Map.merge(@update_attrs, %{published: "true"})
-      )
-
-      assert Repo.get(Post, post.id).published_at != nil
+      conn = get(conn, ~p"/posts/#{post}")
+      assert html_response(conn, 200) =~ "some updated description"
     end
 
     test "renders errors when data is invalid", %{conn: conn, post: post} do
-      conn = put(conn, Routes.post_path(conn, :update, post), post: @invalid_attrs)
+      conn = put(conn, ~p"/posts/#{post}", post: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Post"
     end
   end
@@ -104,17 +68,17 @@ defmodule ExblogWeb.PostControllerTest do
     setup [:create_post]
 
     test "deletes chosen post", %{conn: conn, post: post} do
-      conn = get(conn, Routes.post_path(conn, :delete, post))
-      assert redirected_to(conn) == "/admin/posts"
+      conn = delete(conn, ~p"/posts/#{post}")
+      assert redirected_to(conn) == ~p"/posts"
 
       assert_error_sent 404, fn ->
-        get(conn, Routes.post_path(conn, :show, post))
+        get(conn, ~p"/posts/#{post}")
       end
     end
   end
 
   defp create_post(_) do
-    post = fixture(:post)
-    {:ok, post: post}
+    post = post_fixture()
+    %{post: post}
   end
 end

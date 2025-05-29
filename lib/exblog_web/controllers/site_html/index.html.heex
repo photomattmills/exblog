@@ -1,0 +1,31 @@
+<.header>
+  Listing Sites
+  <:actions>
+    <.link href={~p"/sites/new"}>
+      <.button>New Site</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="sites" rows={@sites} row_click={&JS.navigate(~p"/sites/#{&1}")}>
+  <:col :let={site} label="Css">{site.css}</:col>
+  <:col :let={site} label="Host name">{site.host_name}</:col>
+  <:col :let={site} label="Header">{site.header}</:col>
+  <:col :let={site} label="Footer">{site.footer}</:col>
+  <:col :let={site} label="Twitter handle">{site.twitter_handle}</:col>
+  <:col :let={site} label="Description">{site.description}</:col>
+  <:col :let={site} label="Title">{site.title}</:col>
+  <:col :let={site} label="Root page">{site.root_page}</:col>
+  <:col :let={site} label="Per page">{site.per_page}</:col>
+  <:action :let={site}>
+    <div class="sr-only">
+      <.link navigate={~p"/sites/#{site}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/sites/#{site}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={site}>
+    <.link href={~p"/sites/#{site}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

@@ -3,33 +3,23 @@ defmodule Exblog.Domain.Site do
   import Ecto.Changeset
 
   schema "sites" do
-    field :css, :string
-    field :host_name, :string
     field :header, :string
-    field :footer, :string
-    field :twitter_handle, :string
     field :description, :string
     field :title, :string
+    field :css, :string
+    field :host_name, :string
+    field :footer, :string
+    field :twitter_handle, :string
     field :root_page, :string
     field :per_page, :integer
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(site, attrs) do
     site
-    |> cast(attrs, [
-      :css,
-      :host_name,
-      :header,
-      :footer,
-      :twitter_handle,
-      :description,
-      :title,
-      :root_page,
-      :per_page
-    ])
-    |> validate_required([:host_name])
+    |> cast(attrs, [:css, :host_name, :header, :footer, :twitter_handle, :description, :title, :root_page, :per_page])
+    |> validate_required([:css, :host_name, :header, :footer, :twitter_handle, :description, :title, :root_page, :per_page])
   end
 end

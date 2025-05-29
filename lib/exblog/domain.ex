@@ -95,10 +95,10 @@ defmodule Exblog.Domain do
   ## Examples
 
       iex> change_site(site)
-      %Ecto.Changeset{source: %Site{}}
+      %Ecto.Changeset{data: %Site{}}
 
   """
-  def change_site(%Site{} = site) do
-    Site.changeset(site, %{})
+  def change_site(%Site{} = site, attrs \\ %{}) do
+    Site.changeset(site, attrs)
   end
 end
