@@ -1,0 +1,27 @@
+<.header>
+  Listing Posts
+  <:actions>
+    <.link href={~p"/posts/new"}>
+      <.button>New Post</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="posts" rows={@posts} row_click={&JS.navigate(~p"/posts/#{&1}")}>
+  <:col :let={post} label="Published at">{post.published_at}</:col>
+  <:col :let={post} label="Post ID">{post.id}</:col>
+  <:col :let={post} label="Title">
+    <.link navigate={~p"/posts/#{post.id}"}>{post.title}</.link>
+  </:col>
+  <:action :let={post}>
+    <div class="sr-only">
+      <.link navigate={~p"/posts/#{post}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/posts/#{post}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={post}>
+    <.link href={~p"/posts/#{post}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

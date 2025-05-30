@@ -1,27 +1,25 @@
-<.header>
-  Listing Posts
-  <:actions>
-    <.link href={~p"/posts/new"}>
-      <.button>New Post</.button>
-    </.link>
-  </:actions>
-</.header>
+<%= if Plug.Conn.get_session(@conn, :logged_in) do %>
+  <span><.link navigate={~p"/posts/new"}>New Post</.link></span>
+<% end %>
 
-<.table id="posts" rows={@posts} row_click={&JS.navigate(~p"/posts/#{&1}")}>
-  <:col :let={post} label="Published at">{post.published_at}</:col>
-  <:col :let={post} label="Post ID">{post.id}</:col>
-  <:col :let={post} label="Title">
-    <.link navigate={~p"/posts/#{post.id}"}>{post.title}</.link>
-  </:col>
-  <:action :let={post}>
-    <div class="sr-only">
-      <.link navigate={~p"/posts/#{post}"}>Show</.link>
-    </div>
-    <.link navigate={~p"/posts/#{post}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={post}>
-    <.link href={~p"/posts/#{post}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table>
+<%= for post <- @posts do %>
+  <div class="post">
+    <h2>
+      <.link navigate={~p"/post/#{hd(post.slugs)}"}>
+        post.title
+      </.link>
+    </h2>
+    {{:safe, Earmark.as_html!(post.body, [])}}
+    <h4>Posted on {post.published_at} GMT</h4>
+  </div>
+<% end %>
+
+<div id="pagination">
+  <%= if @previous_page > 0 do %>
+    {{:safe, ~s(<a href="/page/#{@previous_page}">Previous Page</a>)}}
+  <% end %>
+  ...
+  <%= if @next_page > 1 do %>
+    {{:safe, ~s(<a href="/page/#{@next_page}">Next Page</a>)}}
+  <% end %>
+</div>
