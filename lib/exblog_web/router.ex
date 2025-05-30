@@ -11,6 +11,7 @@ defmodule ExblogWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug ExblogWeb.SitePlug
   end
 
   pipeline :api do
@@ -20,9 +21,14 @@ defmodule ExblogWeb.Router do
   scope "/", ExblogWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-    resources "/posts", PostController
-    resources "/sites", SiteController
+    get "/", PostController, :index
+    get "/page/:page", PostController, :index
+    get "/post/:post_slug", PostController, :show_by_slug
+    get "/login", LoginController, :login
+    get "/logout", LoginController, :logout
+    post "/login", LoginController, :do_login
+    get "/rss", PostController, :rss
+    get "/:post_slug", PostController, :show_by_slug, as: "root_post"
   end
 
   # Other scopes may use custom stacks.
@@ -52,22 +58,22 @@ defmodule ExblogWeb.Router do
   scope "/", ExblogWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
+    # get "/users/register", UserRegistrationController, :new
+    # post "/users/register", UserRegistrationController, :create
     get "/users/log_in", UserSessionController, :new
     post "/users/log_in", UserSessionController, :create
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
+    # get "/users/reset_password", UserResetPasswordController, :new
+    # post "/users/reset_password", UserResetPasswordController, :create
+    # get "/users/reset_password/:token", UserResetPasswordController, :edit
+    # put "/users/reset_password/:token", UserResetPasswordController, :update
   end
 
   scope "/", ExblogWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    # get "/users/settings", UserSettingsController, :edit
+    # put "/users/settings", UserSettingsController, :update
+    # get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
   end
 
   scope "/", ExblogWeb do

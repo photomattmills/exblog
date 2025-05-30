@@ -8,16 +8,11 @@
 </.header>
 
 <.table id="posts" rows={@posts} row_click={&JS.navigate(~p"/posts/#{&1}")}>
-  <:col :let={post} label="Body">{post.body}</:col>
-  <:col :let={post} label="Buy link">{post.buy_link}</:col>
-  <:col :let={post} label="Description">{post.description}</:col>
-  <:col :let={post} label="Og image">{post.og_image}</:col>
   <:col :let={post} label="Published at">{post.published_at}</:col>
-  <:col :let={post} label="Slug">{post.slug}</:col>
-  <:col :let={post} label="Slugs">{post.slugs}</:col>
-  <:col :let={post} label="Title">{post.title}</:col>
-  <:col :let={post} label="Page only">{post.page_only}</:col>
-  <:col :let={post} label="Is retail">{post.is_retail}</:col>
+  <:col :let={post} label="Post ID">{post.id}</:col>
+  <:col :let={post} label="Title">
+    <.link navigate={~p"/posts/#{post.id}"}>{post.title}</.link>
+  </:col>
   <:action :let={post}>
     <div class="sr-only">
       <.link navigate={~p"/posts/#{post}"}>Show</.link>

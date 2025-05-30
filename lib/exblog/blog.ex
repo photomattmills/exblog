@@ -21,6 +21,54 @@ defmodule Exblog.Blog do
     Repo.all(Post)
   end
 
+  def list_posts(page, site_id, post_limit \\ 5) do
+    %{
+      posts:
+        posts_query(site_id) |> limit(^post_limit) |> offset(^post_offset(page)) |> Repo.all(),
+      next_page: next_page(page, site_id),
+      previous_page: page - 1
+    }
+  end
+
+  def list_all_posts(site_id) do
+    posts_query(site_id) |> Repo.all()
+  end
+
+  def list_published_and_unpublished_posts(site_id) do
+    all_posts_query(site_id) |> Repo.all()
+  end
+
+  def next_page(page, site_id) do
+    if Repo.aggregate(posts_query(site_id), :count, :id) > page * post_limit() do
+      page + 1
+    else
+      1
+    end
+  end
+
+  defp posts_query(site_id) do
+    from(p in Post,
+      where: not is_nil(p.published_at),
+      where: [site_id: ^site_id, page_only: false],
+      order_by: [desc: :published_at]
+    )
+  end
+
+  defp all_posts_query(site_id) do
+    from(p in Post,
+      where: [site_id: ^site_id],
+      order_by: [desc: :inserted_at]
+    )
+  end
+
+  defp post_limit do
+    Application.get_env(:exblog, :posts_per_page, 5)
+  end
+
+  defp post_offset(page) do
+    (page - 1) * post_limit()
+  end
+
   @doc """
   Gets a single post.
 
@@ -36,6 +84,10 @@ defmodule Exblog.Blog do
 
   """
   def get_post!(id), do: Repo.get!(Post, id)
+
+  def get_post_by_slug!(slug) do
+    from(p in Post, where: ^slug in p.slugs) |> Repo.all() |> hd()
+  end
 
   @doc """
   Creates a post.
