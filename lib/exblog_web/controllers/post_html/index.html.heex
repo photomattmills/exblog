@@ -6,11 +6,11 @@
   <div class="post">
     <h2>
       <.link navigate={~p"/post/#{hd(post.slugs)}"}>
-        post.title
+        {post.title}
       </.link>
     </h2>
     {{:safe, Earmark.as_html!(post.body, [])}}
-    <h4>Posted on {post.published_at} GMT</h4>
+    <h4>Posted by {post.user.display_name} on {post.published_at} GMT</h4>
   </div>
 <% end %>
 

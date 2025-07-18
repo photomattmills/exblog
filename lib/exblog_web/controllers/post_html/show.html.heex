@@ -1,24 +1,12 @@
-<.header>
-  Post {@post.id}
-  <:subtitle>This is a post record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/posts/#{@post}/edit"}>
-      <.button>Edit post</.button>
-    </.link>
-  </:actions>
-</.header>
+<h2><%= @post.title %></h2>
+<div class="post">
+  <%= {:safe, Earmark.as_html!(@post.body, [])} %>
+  <h4>Posted by {@post.user.display_name} on {@post.published_at} GMT</h4>
+</div>
 
-<.list>
-  <:item title="Body">{@post.body}</:item>
-  <:item title="Buy link">{@post.buy_link}</:item>
-  <:item title="Description">{@post.description}</:item>
-  <:item title="Og image">{@post.og_image}</:item>
-  <:item title="Published at">{@post.published_at}</:item>
-  <:item title="Slug">{@post.slug}</:item>
-  <:item title="Slugs">{@post.slugs}</:item>
-  <:item title="Title">{@post.title}</:item>
-  <:item title="Page only">{@post.page_only}</:item>
-  <:item title="Is retail">{@post.is_retail}</:item>
-</.list>
+<%= if Plug.Conn.get_session(@conn, :logged_in) do %>
+  <span><.link navigate={~p"/posts/"<>"#{@post.id}"<>"/edit"}>Edit Post</.link></span>
+<% end %>
 
-<.back navigate={~p"/posts"}>Back to posts</.back>
+
+<.back navigate={~p"/"}>Back to posts</.back>

@@ -50,6 +50,7 @@ defmodule Exblog.Blog do
     from(p in Post,
       where: not is_nil(p.published_at),
       where: [site_id: ^site_id, page_only: false],
+      preload: [:user],
       order_by: [desc: :published_at]
     )
   end
@@ -86,7 +87,7 @@ defmodule Exblog.Blog do
   def get_post!(id), do: Repo.get!(Post, id)
 
   def get_post_by_slug!(slug) do
-    from(p in Post, where: ^slug in p.slugs) |> Repo.all() |> hd()
+    from(p in Post, where: ^slug in p.slugs, preload: [:user]) |> Repo.all() |> hd()
   end
 
   @doc """
