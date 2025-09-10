@@ -16,5 +16,12 @@ config :swoosh, local: false
 # Do not print debug messages in production
 config :logger, level: :info
 
+
+config(:exblog,
+  s3_bucket: "mattdotpicturesimages",
+  s3_base_url: "https://images.matt.pictures"
+)
+
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

@@ -3,6 +3,7 @@ defmodule ExblogWeb.PostController do
 
   alias Exblog.Blog
   alias Exblog.Blog.Post
+  alias ExblogWeb.Router.Helpers, as: Routes
 
   def index(conn = %{assigns: %{site: %{root_page: root}}}, params) when is_nil(root) do
     %{posts: posts, next_page: next_page, previous_page: previous_page} =
@@ -42,9 +43,17 @@ defmodule ExblogWeb.PostController do
     |> render("index.xml", posts: posts, site: conn.assigns.site)
   end
 
-  def new(conn, _params) do
-    changeset = Blog.change_post(%Post{})
-    render(conn, :new, changeset: changeset)
+    def new(conn, _params) do
+      {:ok, post} =
+        Exblog.Repo.insert(%Post{
+          title: "starter title",
+          body: "full speed ahead",
+          site_id: conn.assigns.site.id,
+          user_id: conn.assigns.current_user.id
+        })
+
+      redirect(conn, to: ExblogWeb.Router.Helpers.post_edit_path(conn, :edit, post))
+
   end
 
   def create(conn, %{"post" => post_params}) do

@@ -120,11 +120,25 @@ defmodule Exblog.Blog do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_post(%Post{} = post, attrs) do
+  def update_post(%Post{id: id} = post, attrs) when not is_nil(id) do
+    attrs = add_published_at(post, attrs)
+
     post
     |> Post.changeset(attrs)
     |> Repo.update()
   end
+
+  def update_post(_, attrs), do: create_post(attrs)
+
+  defp add_published_at(_post = %{published_at: nil}, attrs = %{"published" => "true"}) do
+    Map.merge(attrs, %{"published_at" => DateTime.utc_now()})
+  end
+
+  defp add_published_at(_post, attrs = %{"published" => "false"}) do
+    Map.merge(attrs, %{"published_at" => nil})
+  end
+
+  defp add_published_at(_, attrs), do: attrs
 
   @doc """
   Deletes a post.

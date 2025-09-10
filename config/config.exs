@@ -22,6 +22,12 @@ config :exblog, ExblogWeb.Endpoint,
   pubsub_server: Exblog.PubSub,
   live_view: [signing_salt: "8wCqHrKv"]
 
+
+config(:exblog,
+  s3_bucket: "mattdotpicturesimages-dev",
+  s3_base_url: "https://mattdotpicturesimages-dev.s3.us-west-2.amazonaws.com"
+)
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

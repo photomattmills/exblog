@@ -1,0 +1,68 @@
+<.header>
+  <%= if @live_action in [:new] do %>
+    New Post
+  <% end %>
+  <%= if @live_action in [:edit] do %>
+    Edit Post
+  <% end %>
+</.header>
+
+
+<div>
+<div style="
+width: 98vw;
+margin-left: calc((100% - 98vw) / 2);
+display: grid;
+column-gap: 1em;
+grid-template-columns: 1fr 1fr;
+">
+<div style="grid-column: 1;">
+
+
+
+
+<.form
+  for={@form}
+  id="post-form"
+  phx-change="save"
+  phx-submit="save">
+
+  <.input field={@form[:title]} type="text" label="Title" style="width: 90%;"  />
+  <.input field={@form[:body]} type="textarea" label="Post Body" style="width: 100%; height: 25em;"  />
+  <.input field={@form[:og_image]} type="text" label="Featured Image"  />
+  <.input field={@form[:published]} type="checkbox" label="Published" value={@published} />
+  <.input field={@form[:page_only]} type="checkbox" label="Page only" />
+
+  </.form>
+
+  <.form
+  phx-submit="save_photos"
+  phx-change="validate"
+  id="upload-form"
+>
+  <div class="ui segment"
+    style="width: 100%;
+      height: 10em;
+      background-color: gray;
+      color: orange;
+      grid-column: 1;"
+      phx-drop-target={@uploads.photo.ref}
+  >
+    <.live_file_input upload={@uploads.photo} hidden="true" />
+    <p style="text-align: center;
+      line-height: 8em;">
+      Drop photos here!
+    </p>
+  </div>
+</.form>
+
+</div>
+
+  <div style="grid-column: 2; height: 95vh; overflow: scroll;">
+    <h2><%= @post.title %></h2>
+
+    <%= {:safe, Earmark.as_html!(@post.body || "", [])} %>
+  </div>
+  Saved at <%= @post.updated_at %>
+  </div>
+</div>

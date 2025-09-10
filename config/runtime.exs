@@ -16,17 +16,18 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-if System.get_env("PHX_SERVER") do
-  config :exblog, ExblogWeb.Endpoint, server: true
-end
+config :exblog, ExblogWeb.Endpoint, server: true
+
+username = System.get_env("DATABASE_USER")
+password = System.get_env("DATABASE_PASSWORD")
+hostname = "localhost"
+port = 5432
+database = "new_blog_prod"
+
+
 
 if config_env() == :prod do
-  database_url =
-    System.get_env("DATABASE_URL") ||
-      raise """
-      environment variable DATABASE_URL is missing.
-      For example: ecto://USER:PASS@HOST/DATABASE
-      """
+  database_url = "ecto://#{username}:#{password}@localhost:5432/new_blog_prod"
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 

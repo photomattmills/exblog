@@ -23,31 +23,49 @@ defmodule Exblog.Blog.Post do
   end
 
   @doc false
+  # def changeset(post, attrs) do
+  #   post
+  #   |> cast(attrs, [
+  #     :body,
+  #     :buy_link,
+  #     :description,
+  #     :og_image,
+  #     :published_at,
+  #     :slug,
+  #     :slugs,
+  #     :title,
+  #     :page_only,
+  #     :is_retail
+  #   ])
+  #   |> validate_required([
+  #     :body,
+  #     :slug,
+  #     :title
+  #   ])
+  # end
+
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [
-      :body,
-      :buy_link,
-      :description,
-      :og_image,
-      :published_at,
-      :slug,
-      :slugs,
-      :title,
-      :page_only,
-      :is_retail
-    ])
-    |> validate_required([
-      :body,
-      :buy_link,
-      :description,
-      :og_image,
-      :published_at,
-      :slug,
-      :slugs,
-      :title,
-      :page_only,
-      :is_retail
-    ])
+    |> cast(attrs, __schema__(:fields))
+    |> validate_required([:title])
+    |> add_slug_to_changeset()
   end
+
+  def title_slug(title) do
+    String.downcase(title) |> String.replace(" ", "_")
+  end
+
+  defp add_slug_to_changeset(changeset = %{valid?: false}), do: changeset
+
+  defp add_slug_to_changeset(changeset = %{changes: %{title: title}, data: %{slugs: slugs}})
+       when title != nil and slugs != nil do
+    put_change(changeset, :slugs, [title_slug(title) | slugs])
+  end
+
+  defp add_slug_to_changeset(changeset = %{changes: %{title: title}, data: %{slugs: slugs}})
+       when title != nil and slugs == nil do
+    put_change(changeset, :slugs, [title_slug(title)])
+  end
+
+  defp add_slug_to_changeset(changeset), do: changeset
 end

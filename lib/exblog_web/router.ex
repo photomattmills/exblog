@@ -19,6 +19,25 @@ defmodule ExblogWeb.Router do
   end
 
   scope "/", ExblogWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    # get "/users/register", UserRegistrationController, :new
+    # post "/users/register", UserRegistrationController, :create
+    get "/login", UserSessionController, :new
+    post "/users/log_in", UserSessionController, :create
+    post "/log_in", UserSessionController, :create
+    # get "/users/reset_password", UserResetPasswordController, :new
+    # post "/users/reset_password", UserResetPasswordController, :create
+    # get "/users/reset_password/:token", UserResetPasswordController, :edit
+    # put "/users/reset_password/:token", UserResetPasswordController, :update
+  end
+
+  scope "/", ExblogWeb do
+    pipe_through [:browser]
+    get "/logout", UserSessionController, :delete
+  end
+
+  scope "/", ExblogWeb do
     pipe_through :browser
 
     get "/", PostController, :index
@@ -52,18 +71,7 @@ defmodule ExblogWeb.Router do
 
   ## Authentication routes
 
-  scope "/", ExblogWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    # get "/users/register", UserRegistrationController, :new
-    # post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
-    # get "/users/reset_password", UserResetPasswordController, :new
-    # post "/users/reset_password", UserResetPasswordController, :create
-    # get "/users/reset_password/:token", UserResetPasswordController, :edit
-    # put "/users/reset_password/:token", UserResetPasswordController, :update
-  end
 
   scope "/", ExblogWeb do
     pipe_through [:browser, :require_authenticated_user]
@@ -82,5 +90,17 @@ defmodule ExblogWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+  end
+  scope "/", ExblogWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    resources "/sites", SiteController
+
+  # live "/posts", PostLive.Index, :index
+    get "/posts/new", PostController, :new
+    live "/posts/:id/edit", PostLive.Index, :edit, as: :post_edit
+
+    live "/posts/:id", PostLive.Show, :show
+    live "/posts/:id/show/edit", PostLive.Show, :edit
   end
 end

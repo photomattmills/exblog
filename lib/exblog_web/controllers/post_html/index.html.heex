@@ -1,4 +1,4 @@
-<%= if Plug.Conn.get_session(@conn, :logged_in) do %>
+<%= if Plug.Conn.get_session(@conn)["user_token"] do %>
   <span><.link navigate={~p"/posts/new"}>New Post</.link></span>
 <% end %>
 
