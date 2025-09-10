@@ -71,8 +71,6 @@ defmodule ExblogWeb.Router do
 
   ## Authentication routes
 
-
-
   scope "/", ExblogWeb do
     pipe_through [:browser, :require_authenticated_user]
 
@@ -91,12 +89,14 @@ defmodule ExblogWeb.Router do
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
   end
+
   scope "/", ExblogWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     resources "/sites", SiteController
 
-  # live "/posts", PostLive.Index, :index
+    get "/admin/posts", PostController, :admin_index
+    # live "/posts", PostLive.Index, :index
     get "/posts/new", PostController, :new
     live "/posts/:id/edit", PostLive.Index, :edit, as: :post_edit
 

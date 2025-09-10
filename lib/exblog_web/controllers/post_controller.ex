@@ -40,20 +40,26 @@ defmodule ExblogWeb.PostController do
 
     conn
     |> put_resp_content_type("text/xml")
-    |> render("index.xml", posts: posts, site: conn.assigns.site)
+    |> put_format(:xml)
+    |> render("rss.xml", layout: false, posts: posts, site: conn.assigns.site)
   end
 
-    def new(conn, _params) do
-      {:ok, post} =
-        Exblog.Repo.insert(%Post{
-          title: "starter title",
-          body: "full speed ahead",
-          site_id: conn.assigns.site.id,
-          user_id: conn.assigns.current_user.id
-        })
+  def new(conn, _params) do
+    {:ok, post} =
+      Exblog.Repo.insert(%Post{
+        title: "starter title",
+        body: "full speed ahead",
+        site_id: conn.assigns.site.id,
+        user_id: conn.assigns.current_user.id
+      })
 
-      redirect(conn, to: ExblogWeb.Router.Helpers.post_edit_path(conn, :edit, post))
+    redirect(conn, to: ExblogWeb.Router.Helpers.post_edit_path(conn, :edit, post))
+  end
 
+  def admin_index(conn, _params) do
+    posts = Blog.list_published_and_unpublished_posts(conn.assigns.site.id)
+
+    render(conn, "admin_index.html", [posts: posts] ++ default_assigns(conn, posts))
   end
 
   def create(conn, %{"post" => post_params}) do

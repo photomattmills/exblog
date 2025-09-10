@@ -7,7 +7,13 @@
   </:actions>
 </.header>
 
-<.table id="posts" rows={@posts} row_click={&JS.navigate(~p"/posts/#{&1}")}>
+<.table
+  id="posts"
+  rows={@posts}
+  row_click={&JS.navigate(~p"/posts/#{&1}")}
+  style="width: 80vw; margin: 0 auto;"
+  class="w-100"
+>
   <:col :let={post} label="Published at">{post.published_at}</:col>
   <:col :let={post} label="Post ID">{post.id}</:col>
   <:col :let={post} label="Title">
