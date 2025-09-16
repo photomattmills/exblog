@@ -1,6 +1,8 @@
 defmodule ExblogWeb.PostHTML do
   use ExblogWeb, :html
 
+  alias ExblogWeb.Router.Helpers, as: Routes
+
   embed_templates "post_html/*"
 
   @doc """

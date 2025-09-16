@@ -70,7 +70,7 @@ defmodule ExblogWeb do
   def html do
     quote do
       use Phoenix.Component
-
+      use Phoenix.Router, helpers: true
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
