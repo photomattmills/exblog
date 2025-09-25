@@ -17,7 +17,7 @@
   <:col :let={post} label="Published at">{post.published_at}</:col>
   <:col :let={post} label="Post ID">{post.id}</:col>
   <:col :let={post} label="Title">
-    <.link navigate={~p"/posts/#{post.id}"}>{post.title}</.link>
+    <.link navigate={~p"/posts/#{slug(post.slugs)}"}>{post.title}</.link>
   </:col>
   <:action :let={post}>
     <div class="sr-only">

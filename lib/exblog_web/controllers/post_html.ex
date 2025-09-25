@@ -28,4 +28,7 @@ defmodule ExblogWeb.PostHTML do
   defp replace_ampersand(string) do
     Regex.replace(~r/&(?!(lt|gt|quot|apos|amp);)/, string, "&amp;")
   end
+
+  def slug([h | t]), do: h
+  def slug(nil), do: ""
 end
