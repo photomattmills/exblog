@@ -43,6 +43,7 @@ defmodule ExblogWeb.Router do
     get "/", PostController, :index
     get "/page/:page", PostController, :index
     get "/post/:post_slug", PostController, :show_by_slug
+    get "/posts/:post_slug", PostController, :show_by_slug
     get "/rss", PostController, :rss
     get "/:post_slug", PostController, :show_by_slug, as: "root_post"
   end
@@ -101,7 +102,6 @@ defmodule ExblogWeb.Router do
     get "/posts/new", PostController, :new
     live "/posts/:id/edit", PostLive.Index, :edit, as: :post_edit
 
-    live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
   end
 end
