@@ -3,7 +3,7 @@ defmodule ExblogWeb.PostXML do
 
   alias ExblogWeb.Router.Helpers, as: Routes
 
-  embed_templates "post_html/rss.xml.eex"
+  embed_templates "post_xml/*"
 
   def published(%{published_at: pa}) when pa != nil, do: true
   def published(_post), do: false
