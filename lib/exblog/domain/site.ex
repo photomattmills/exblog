@@ -19,7 +19,26 @@ defmodule Exblog.Domain.Site do
   @doc false
   def changeset(site, attrs) do
     site
-    |> cast(attrs, [:css, :host_name, :header, :footer, :twitter_handle, :description, :title, :root_page, :per_page])
-    |> validate_required([:css, :host_name, :header, :footer, :twitter_handle, :description, :title, :root_page, :per_page])
+    |> cast(attrs, [
+      :css,
+      :host_name,
+      :header,
+      :footer,
+      :twitter_handle,
+      :description,
+      :title,
+      :root_page,
+      :per_page
+    ])
+    |> validate_required([
+      :css,
+      :host_name,
+      :header,
+      :footer,
+      :twitter_handle,
+      :description,
+      :title,
+      :per_page
+    ])
   end
 end
